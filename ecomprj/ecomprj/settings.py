@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
 
     # Custom Apps
     'core',
+    'userauths',
 ]
 
 MIDDLEWARE = [
@@ -120,11 +122,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [os.path.join()]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Jazzmin Settings
+
+JAZZMIN_SETTINGS = {
+    'site_header': 'Cheburashka',
+    'site_brand': 'You order, we deliver',
+    'site_logo': 'assets/imgs/theme/logo.svg',
+    'site_copyright': 'Cheburashka 2024',
+}
+
+# Custom User Model
+
+AUTH_USER_MODEL = 'userauths.User'
