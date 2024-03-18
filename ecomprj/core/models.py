@@ -3,7 +3,7 @@ from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from userauths.models import User
 from taggit.managers import TaggableManager
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 STATUS_CHOICE = (
@@ -57,7 +57,7 @@ class Vendor(models.Model):
     title = models.CharField(max_length=100, default='Nestify')
     image = models.ImageField(upload_to=user_directory_path, default='vendor.jpg')
     cover_image = models.ImageField(upload_to=user_directory_path, default='vendor.jpg')
-    description = RichTextUploadingField(null=True, blank=True, default='I am an Amazing vendor')
+    description = CKEditor5Field(config_name='extends', null=True, blank=True, default='I am an Amazing vendor')
     address = models.CharField(max_length=255, default='123 Main Street, London')
     contact = models.CharField(max_length=15, default='123 (456) 7890')
     chat_resp_time = models.CharField(max_length=100, default='100')
@@ -83,10 +83,10 @@ class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=30, alphabet='abcdefghijklmnopqrstuvwxyz12345678090')
     title = models.CharField(max_length=100, default='Fresh Pear')
     image = models.ImageField(upload_to=user_directory_path, default='product.jpg')
-    description = RichTextUploadingField(null=True, blank=True, default='This is the product')
+    description = CKEditor5Field(config_name='extends', null=True, blank=True, default='This is the product')
     price = models.DecimalField(max_digits=10, decimal_places=2, default='1.99')
     old_price = models.DecimalField(max_digits=10, decimal_places=2, default='2.99')
-    specifications = RichTextUploadingField(null=True, blank=True)
+    specifications = CKEditor5Field(config_name='extends', null=True, blank=True)
     type = models.CharField(max_length=100, default='Organic', null=True, blank=True)
     stock_count = models.CharField(max_length=100, default='10', null=True, blank=True)
     life = models.CharField(max_length=100, default='10 days', null=True, blank=True)
