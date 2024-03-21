@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-12 col-xs-12">
                                         <div class="detail-info pr-30 pl-30">
-                                            <span class="stock-status out-stock"> -{{ p.get_precentage|floatformat:0 }} </span>
+                                            <span class="stock-status out-stock"> -{{ p.get_percentage|floatformat:0 }}% </span>
                                             <h2 class="title-detail">{{ p.title }}</h2>
                                             <div class="product-detail-rating">
                                                 <div class="product-rate-cover text-end">
@@ -272,20 +272,22 @@
                                                                 <div class="single-comment justify-content-between d-flex mb-30">
                                                                     <div class="user justify-content-between d-flex">
                                                                         <div class="thumb text-center">
-                                                                            <img src="" style="width: 100px; height: 100px; object-fit: cover;" alt="" />
-                                                                            <a href="#" class="font-heading text-brand">{{ r.user.username|title }}</a>
+                                                                            <img src="{{ r.user.profile.image.url }}" style="width: 100px; height: 100px; object-fit: cover;" alt="" />
+                                                                            <a href="#" class="font-heading text-brand">{{r.user.username|title}}</a>
                                                                         </div>
 
                                                                         <div class="desc">
                                                                             <div class="d-flex justify-content-between mb-10">
                                                                                 <div class="d-flex align-items-center">
-                                                                                    <span class="font-xs text-muted">{{ r.date|date:"d M, Y" }} </span>
+                                                                                    <span class="font-xs text-muted">{{r.date|date:"d M, Y"}} </span>
                                                                                 </div>
-                                                                                <div class="product-rate d-inline-block">
-                                                                                    <div class="product-rating" style="width: 100%"></div>
+                                                                                <div>
+                                                                                    {% for star in r.rating|ljust:r.rating %}
+                                                                                     <i class="fas fa-star text-warning"></i>
+                                                                                    {% endfor %}
                                                                                 </div>
                                                                             </div>
-                                                                            <p class="mb-10">{{ r.review }}</p>
+                                                                            <p class="mb-10">{{ r.review}}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -325,41 +327,55 @@
                                                     </div>
                                                 </div>
                                                 <!--comment form-->
+                                                {% if request.user.is_authenticated %}
+                                                {% if make_review %}
                                                 <div class="comment-form">
-                                                    <h4 class="mb-15">Add a review</h4>
-                                                    <div class="product-rate d-inline-block mb-30"></div>
-                                                    <div class="row">
-                                                        <div class="col-lg-8 col-md-12">
-                                                            <form class="form-contact comment_form" action="#" id="commentForm">
-                                                                <div class="row">
-                                                                    <div class="col-12">
-                                                                        <div class="form-group">
-                                                                            <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
+                                                        <h4 class="mb-15 add-review">Add a review</h4>
+                                                        <strong class="text-success" id="review-res"> </strong>
+                                                        <!-- <div class="product-rate d-inline-block mb-30"></div> -->
+                                                        <div class="row">
+                                                            <div class="col-lg-8 col-md-12">
+                                                                <form class="form-contact comment_form hide-comment-form" action="{% url 'core:ajax-add-review' p.pid %}" id="commentForm" method="POST">
+                                                                    {% csrf_token %}
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <div class="form-group">
+                                                                                {{ review_form.review }}
+                                                                                <!-- <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea> -->
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="form-group">
-                                                                            <input class="form-control" name="name" id="name" type="text" placeholder="Name" />
+
+                                                                        <div class="col-12">
+                                                                            <div class="form-group">
+                                                                                {{ review_form.rating }}
+                                                                                <!-- <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea> -->
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="form-group">
-                                                                            <input class="form-control" name="email" id="email" type="email" placeholder="Email" />
+                                                                        <!-- <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <input class="form-control" name="name" id="name" type="text" placeholder="Name" />
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-12">
-                                                                        <div class="form-group">
-                                                                            <input class="form-control" name="website" id="website" type="text" placeholder="Website" />
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <input class="form-control" name="email" id="email" type="email" placeholder="Email" />
+                                                                            </div>
                                                                         </div>
+                                                                        <div class="col-12">
+                                                                            <div class="form-group">
+                                                                                <input class="form-control" name="website" id="website" type="text" placeholder="Website" />
+                                                                            </div>
+                                                                        </div> -->
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <button type="submit" class="button button-contactForm">Submit Review</button>
-                                                                </div>
-                                                            </form>
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="button button-contactForm">Submit Review</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                {% endif %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
