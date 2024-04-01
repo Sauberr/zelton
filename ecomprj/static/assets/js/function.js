@@ -3,6 +3,7 @@ console.log("rating system work");
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Apr", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 
+// Rating system
 
 $("#commentForm").submit(function (e) {
     e.preventDefault();
@@ -60,24 +61,228 @@ $("#commentForm").submit(function (e) {
     })
 })
 
+// Filter by vendor, category and price
 
 $(document).ready(function () {
-    $(".filter-checkbox").on("click", function () {
-        console.log('A checkbox have been clicked');
+    $(".filter-checkbox, #price-filter-btn").on("click", function () {
+        console.log("A checkbox have been clicked");
 
         let filter_object = {}
 
-        $('.filter-checkbox').each(function () {
-            let filter_value = $(this).val()
-            let filter_key = $(this).data('filter')
+        let min_price = $("#max_price").attr("min")
+        let max_price = $("#max_price").val()
 
-            console.log('Filter value is:', filter_value);
-            console.log('Filter key is:', filter_key);
+        filter_object.min_price = min_price;
+        filter_object.max_price = max_price;
+
+        $(".filter-checkbox").each(function () {
+            let filter_value = $(this).val()
+            let filter_key = $(this).data("filter") // vendor, category
+
+            // console.log("Filter value is:", filter_value);
+            // console.log("Filter key is:", filter_key);
 
             filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function (element) {
                 return element.value
             })
         })
-        console.log('Filter Object is:', filter_object);
+        console.log("Filter Object is: ", filter_object);
+        $.ajax({
+            url: '/filter-products',
+            data: filter_object,
+            dataType: 'json',
+            beforeSend: function () {
+                console.log("Trying to filter product...");
+            },
+            success: function (response) {
+                console.log(response.length);
+                console.log("Data filtred successfully...");
+                $(".totall-product").hide()
+                $("#filtered-product").html(response.data)
+            }
+        })
     })
+
+    $("#max_price").on("blur", function () {
+        let min_price = $(this).attr("min")
+        let max_price = $(this).attr("max")
+        let current_price = $(this).val()
+
+        // console.log("Current Price is:", current_price);
+        // console.log("Max Price is:", max_price);
+        // console.log("Min Price is:", min_price);
+
+        if (current_price < parseInt(min_price) || current_price > parseInt(max_price)) {
+            // console.log("Price Error Occured");
+
+            min_price = Math.round(min_price * 100) / 100
+            max_price = Math.round(max_price * 100) / 100
+
+
+            // console.log("Max Price is:", min_Price);
+            // console.log("Min Price is:", max_Price);
+
+            alert("Price must between $" + min_price + ' and $' + max_price)
+            $(this).val(min_price)
+            $('#range').val(min_price)
+
+            $(this).focus()
+
+            return false
+
+        }
+
+    })
+
+    // Add to cart functionality
+    $(".add-to-cart-btn").on("click", function () {
+
+        let this_val = $(this)
+        let index = this_val.attr("data-index")
+
+        let quantity = $(".product-quantity-" + index).val()
+        let product_title = $(".product-title-" + index).val()
+
+        let product_id = $(".product-id-" + index).val()
+        let product_price = $(".current-product-price-" + index).text()
+
+        let product_pid = $(".product-pid-" + index).val()
+        let product_image = $(".product-image-" + index).val()
+
+
+        console.log("Quantity:", quantity);
+        console.log("Title:", product_title);
+        console.log("Price:", product_price);
+        console.log("ID:", product_id);
+        console.log("PID:", product_pid);
+        console.log("Image:", product_image);
+        console.log("Index:", index);
+        console.log("Currrent Element:", this_val);
+
+        $.ajax({
+            url: '/add-to-cart',
+            data: {
+                'id': product_id,
+                'pid': product_pid,
+                'image': product_image,
+                'qty': quantity,
+                'title': product_title,
+                'price': product_price,
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                console.log("Adding Product to Cart...");
+            },
+            success: function (response) {
+                // this_val.html("✓")
+                this_val.html("<i class='fas fa-check-circle'></i>")
+
+                console.log("Added Product to Cart!");
+                $(".cart-items-count").text(response.totalcartitems)
+
+
+            }
+        })
+    })
+
+
+    $(".delete-product").on("click", function () {
+
+        let product_id = $(this).attr("data-product")
+        let this_val = $(this)
+
+        console.log("Product ID:", product_id);
+
+        $.ajax({
+            url: "/delete-from-cart",
+            data: {
+                "id": product_id
+            },
+            dataType: "json",
+            beforeSend: function () {
+                this_val.hide()
+            },
+            success: function (response) {
+                this_val.show()
+                $(".cart-items-count").text(response.totalcartitems)
+                $("#cart-list").html(response.data)
+            }
+        })
+
+    })
+
+    $(".update-product").on("click", function () {
+
+        let product_id = $(this).attr("data-product")
+        let this_val = $(this)
+        let product_quantity = $(".product-qty-" + product_id).val()
+
+        console.log("Product ID:", product_id);
+        console.log("Product Quantity:", product_quantity);
+
+        $.ajax({
+            url: "/update-cart",
+            data: {
+                "id": product_id,
+                "qty": product_quantity,
+            },
+            dataType: "json",
+            beforeSend: function () {
+                this_val.hide()
+            },
+            success: function (response) {
+                this_val.show()
+                $(".cart-items-count").text(response.totalcartitems)
+                $("#cart-list").html(response.data)
+                window.location.reload()
+            }
+        })
+
+    })
+
+
 })
+
+
+
+
+
+// // Add to cart func
+//
+//
+// $(".add-to-cart-btn").on("click", function () {
+//     let quantity = $("#product-quantity").val()
+//     let product_title = $(".product-title").val()
+//     let product_id = $(".product-id").val()
+//     let product_price = $("#current-product-price").text()
+//     let this_val = (this)
+//
+//     console.log("Quantity:", quantity);
+//     console.log("Title:", product_title);
+//     console.log("Product ID:", product_id);
+//     console.log("Product Price:", product_price);
+//     console.log("Current Element:", this_val);
+//
+//     $.ajax({
+//         url: '/add-to-cart',
+//         data: {
+//             'id': product_id,
+//             'qty': quantity,
+//             'title': product_title,
+//             'price': product_price
+//         },
+//         dataType: 'json',
+//         beforeSend: function () {
+//             console.log("Adding product to cart...");
+//         },
+//         success: function (response) {
+//             this.val.html("Item added to cart")
+//             console.log("Added product to cart ...");
+//             $(".cart-items-count").text(response.totalcartitems)
+//         }
+//     })
+// })
+
+
+
+
