@@ -7,7 +7,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 
 STATUS_CHOICE = (
-    ('process', 'Processing'),
+    ('processing', 'Processing'),
     ('shipped', 'Shipped'),
     ('delivered', 'Delivered'),
 )
@@ -138,8 +138,11 @@ class CartOrder(models.Model):
     class Meta:
         verbose_name_plural = 'Cart Order'
 
+    def __str__(self):
+        return self.user.username
 
-class CartOrderItems(models.Model):
+
+class CartOrderProducts(models.Model):
     order = models.ForeignKey(CartOrder, on_delete=models.CASCADE)
     invoice_no = models.CharField(max_length=100)
     product_status = models.CharField(max_length=200)
@@ -148,6 +151,7 @@ class CartOrderItems(models.Model):
     qty = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, default='1.99')
     total = models.DecimalField(max_digits=10, decimal_places=2, default='1.99')
+    date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = 'Cart Order Items'
@@ -155,13 +159,15 @@ class CartOrderItems(models.Model):
     def order_image(self):
         return mark_safe('<img src="/media/%s" width="50" height="50" />' % (self.image))
 
+    def __str__(self):
+        return self.item
+
 
 class ProductReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='reviews')
     rating = models.CharField(choices=RATING, max_length=1, default=None)
     review = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = 'Product Reviews'
@@ -187,6 +193,7 @@ class Wishlist(models.Model):
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    mobile = models.CharField(max_length=15, null=True)
     address = models.CharField(max_length=100, null=True)
     status = models.BooleanField(default=False)
 

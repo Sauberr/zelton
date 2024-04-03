@@ -1,12 +1,18 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from datetime import datetime
 
-from core.models import Product, Category, Vendor, ProductReview
+from core.models import Product, Category, Vendor, ProductReview, CartOrder, CartOrderProducts, Address
 from taggit.models import Tag
 from core.forms import ProductReviewForm
 from django.template.loader import render_to_string
 from django.contrib import messages
+from django.urls import reverse
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.forms import PayPalPaymentsForm
 
 
 def index(request):
@@ -206,14 +212,108 @@ def update_cart(request):
     return JsonResponse({"data": context, 'totalcartitems': len(request.session['cart_data_obj'])})
 
 
+@login_required
 def checkout_view(request):
     cart_total_amount = 0
+    total_amount = 0
+
+    # Checking if cart_data_obj session exists
+    if 'cart_data_obj' in request.session:
+        # Getting total amount for Paypal amount
+        for p_id, item in request.session['cart_data_obj'].items():
+            total_amount += int(item['qty']) * float(item['price'])
+
+        # Create order object
+        order = CartOrder.objects.create(
+            user=request.user,
+            price=total_amount,
+        )
+
+        # Getting total amount for the cart
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+
+            cart_order_products = CartOrderProducts.objects.create(
+                order=order,
+                invoice_no='INVOICE_NO-' + str(order.id),
+                item=item['title'],
+                image=item['image'],
+                qty=item['qty'],
+                price=item['price'],
+                total=float(item['qty']) * float(item['price'])
+            )
+
+    host = request.get_host()
+    paypal_dict = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': cart_total_amount,
+        'item_name': 'Order-Item-No-' + str(order.id),
+        'invoice': 'INV_NO-' + str(order.id),
+        'currency_code': 'USD',
+        'notify_url': 'http://{}{}'.format(host, reverse("core:paypal-ipn")),
+        'return_url': 'http://{}{}'.format(host, reverse("core:payment-completed")),
+        'cancel_url': 'http://{}{}'.format(host, reverse("core:payment-failed")),
+    }
+
+    paypal_payment_button = PayPalPaymentsForm(initial=paypal_dict)
+
+    return render(request, "core/checkout.html", {"cart_data": request.session['cart_data_obj'],
+                      'totalcartitems': len(request.session['cart_data_obj']),
+                    'cart_total_amount': cart_total_amount, 'paypal_payment_button': paypal_payment_button})
+
+
+@login_required
+def payment_completed_view(request):
+    cart_total_amount = 0
+    date = datetime.now()
     if 'cart_data_obj' in request.session:
         for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount += int(item['qty']) * float(item['price'])
-        return render(request, "core/checkout.html", {"cart_data": request.session['cart_data_obj'],
-                                                  'totalcartitems': len(request.session['cart_data_obj']),
-                                                  'cart_total_amount': cart_total_amount})
+    return render(request, 'core/payment-completed.html', {"cart_data": request.session['cart_data_obj'],
+                      'totalcartitems': len(request.session['cart_data_obj']),
+                    'cart_total_amount': cart_total_amount, 'date': date})
+
+
+@login_required
+def payment_failed_view(request):
+    return render(request, 'core/payment-failed.html')
+
+
+@login_required
+def customer_dashboard(request):
+    orders = CartOrder.objects.filter(user=request.user).order_by('-id')
+    address = Address.objects.filter(user=request.user)
+
+    if request.method == 'POST':
+        address = request.POST.get('address')
+        mobile = request.POST.get('mobile')
+
+        new_address = Address.objects.create(
+            user=request.user,
+            address=address,
+            mobile=mobile,
+        )
+        messages.success(request, 'Address has been added successfully')
+        return redirect('core:dashboard')
+
+    context = {
+        'orders': orders,
+        'address': address,
+    }
+    return render(request, 'core/dashboard.html', context)
+
+
+@login_required
+def order_detail(request, id):
+    order = CartOrder.objects.get(user=request.user, id=id)
+    order_items = CartOrderProducts.objects.filter(order=order)
+    context = {
+        'order_items': order_items,
+    }
+    return render(request, 'core/order-detail.html', context)
+
+
+
 
 
 

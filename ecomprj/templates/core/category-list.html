@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="entry-content-2">
                                     <h4 class="post-title mb-15">
-                                        <a href="{% url 'core:category-product-list' c.cid %}">{{ c.title }}</a>
+                                        <a href="{% url 'core:category-product-list' c.cid %}">{{ c.title|title }}</a>
                                     </h4>
                                     <div class="entry-meta font-xs color-grey mt-10 pb-10">
                                         <div>
