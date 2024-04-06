@@ -53,6 +53,9 @@
                                                     manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a>
                                                 </p>
                                             </div>
+                                             <div style="height: 800px; width: 800px; object-fit: cover;">
+                                                <canvas id="myChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
@@ -74,7 +77,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {% for o in orders %}
+                                                        {% for o in order_list %}
                                                             <tr>
                                                                 <td>Invoice number {{ o.id }}</td>
                                                                 <td>{{ o.order_date }}</td>
@@ -153,10 +156,16 @@
                                                         <address>
                                                            <p>{{ a.address }}</p>
                                                            <p> {{ a.mobile }}</p>
-<!--                                                       <p> {{ a.status }}</p>-->
                                                         </address>
-                                                        <button class="btn">Make default</button>
-                                                        <i class="fa fa-check-circle text-success"></i>
+                                                        <br>
+                                                       {% if a.status %}
+                                                            <i data-address-id="{{ a.id }}" class="fa fa-check-circle text-success check{{ a.id }} check"></i>
+                                                            <button data-address-id="{{ a.id }}"  style="display: none;" class="btn make-default-address button{{ a.id }} action_btn">Make Default</button>
+
+                                                        {% else %}
+                                                            <i data-address-id="{{ a.id }}" style="display: none;" class="fa fa-check-circle text-success check check{{ a.id }}"></i>
+                                                            <button data-address-id="{{ a.id }}"   class="btn make-default-address button{{ a.id }} action_btn">Make Default</button>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                             </div>
@@ -216,4 +225,34 @@
             </div>
         </div>
     </main>
+
+<script>
+        const labels = {{ month|safe }}
+
+        const data = {
+          labels: labels,
+          datasets: [{
+            label: 'Orders',
+            backgroundColor: 'rgb(59, 183, 126)',
+            borderColor: 'rgb(59, 183, 126)',
+            data: {{ total_orders|safe }}
+          }],
+
+        };
+
+        const config = {
+          type: 'line',
+          data: data,
+          options: {
+            tooltips: {enabled: false},
+            hover: {mode: null},
+          }
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+</script>
+
 {% endblock %}

@@ -91,7 +91,7 @@
                                             </div>
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
-                                                    <a href="shop-grid-right.html">{{ p.category|title }}</a>
+                                                    <a href="{% url 'core:category-product-list' p.category.cid %}">{{ p.category|title }}</a>
                                                 </div>
                                                 <h2><a href="{% url 'core:product-detail' p.pid %}">{{ p.title }}</a></h2>
                                                 <div class="product-rate-cover">
@@ -114,7 +114,12 @@
                                                         <input type="hidden" class="product-image-{{ p.id }}" value="{{ p.image.url }}">
                                                         <input type="hidden" class="product-id-{{ p.id }}" value="{{ p.id }}">
                                                         <input type="hidden" class="product-title-{{ p.id }}" value="{{ p.title }}">
-                                                        <button class="add add-to-cart-btn" data-index="{{ p.id }}" style="border: none;" id="add-to-cart-btn"><i class="fi-rs-shopping-cart mr-5"></i>Add </button>
+
+                                                        <div class="d-flex">
+                                                            <button class="add add-to-cart-btn" data-index="{{ p.id }}" style="border: none;" id="add-to-cart-btn"><i class="fi-rs-shopping-cart mr-5"></i>Add </button>
+                                                            <button style="border: none; background: none;" class="add-to-wishlist" data-product-item="{{ p.id }}"><i class="fi-rs-heart" style="fill: aqua;"></i></button>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -3019,42 +3024,20 @@
                     <!-- Product sidebar Widget -->
                     <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                         <h5 class="section-title style-1 mb-30">New products</h5>
+                        {% for p in products|slice:':3' %}
                         <div class="single-post clearfix">
                             <div class="image">
-                                <img src="{% static 'assets/imgs/shop/thumbnail-3.jpg' %}" alt="#" />
+                                <img src="{{ p.image.url }}" alt="#" />
                             </div>
                             <div class="content pt-10">
-                                <h5><a href="shop-product-detail.html">Chen Cardigan</a></h5>
-                                <p class="price mb-0 mt-5">$99.50</p>
+                                <h5><a href="{% url 'core:product-detail' p.pid %}">{{ p.title|title }}</a></h5>
+                                <p class="price mb-0 mt-5">${{ p.price|floatformat:2 }}</p>
                                 <div class="product-rate">
                                     <div class="product-rating" style="width: 90%"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="single-post clearfix">
-                            <div class="image">
-                                <img src="{% static 'assets/imgs/shop/thumbnail-4.jpg' %}" alt="#" />
-                            </div>
-                            <div class="content pt-10">
-                                <h6><a href="shop-product-detail.html">Chen Sweater</a></h6>
-                                <p class="price mb-0 mt-5">$89.50</p>
-                                <div class="product-rate">
-                                    <div class="product-rating" style="width: 80%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-post clearfix">
-                            <div class="image">
-                                <img src="{% static 'assets/imgs/shop/thumbnail-5.jpg' %}" alt="#" />
-                            </div>
-                            <div class="content pt-10">
-                                <h6><a href="shop-product-detail.html">Colorful Jacket</a></h6>
-                                <p class="price mb-0 mt-5">$25</p>
-                                <div class="product-rate">
-                                    <div class="product-rating" style="width: 60%"></div>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <div class="banner-img wow fadeIn mb-lg-0 animated d-lg-block d-none">
                         <img src="{% static 'assets/imgs/banner/banner-11.png' %}" alt="" />

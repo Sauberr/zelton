@@ -240,48 +240,85 @@ $(document).ready(function () {
 
     })
 
+    // Making default address
+    $(document).on("click", ".make-default-address", function () {
+        let id = $(this).attr("data-address-id")
+        let this_val = $(this)
+
+        console.log("ID is:", id);
+        console.log("Element is:", this_val);
+
+        $.ajax({
+            url: "/make-default-address",
+            data: {
+                "id": id
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log("Address made default...");
+                if (response.boolean == true) {
+
+                    $(".check").hide()
+                    $(".action_btn").show()
+
+                    $(".check" + id).show()
+                    $(".button" + id).hide()
+                }
+            }
+        })
+    })
+
+    // Add to wishlist
+
+   $(document).on("click", ".add-to-wishlist", function () {
+        let product_id = $(this).attr("data-product-item")
+        let this_val = $(this)
+
+
+        console.log("PRoduct ID IS", product_id);
+
+        $.ajax({
+            url: "/add-to-wishlist",
+            data: {
+                "id": product_id
+            },
+            dataType: "json",
+            beforeSend: function () {
+                console.log("Adding to wishlist...")
+            },
+            success: function (response) {
+                this_val.html("<i class='fas fa-heart text-danger'></i>")
+                if (response.bool === true) {
+                    console.log("Added to wishlist...");
+                }
+            }
+        })
+   })
+
+   // Remove from wishlist
+    $(document).on("click", ".delete-wishlist-product", function () {
+        let wishlist_id = $(this).attr("data-wishlist-product")
+        let this_val = $(this)
+
+        console.log("wishlist id is:", wishlist_id);
+
+        $.ajax({
+            url: "/remove-from-wishlist",
+            data: {
+                "id": wishlist_id
+            },
+            dataType: "json",
+            beforeSend: function () {
+                console.log("Deleting product from wishlist...");
+            },
+            success: function (response) {
+                $("#wishlist-list").html(response.data)
+            }
+        })
+    })
 
 })
 
-
-
-
-
-// // Add to cart func
-//
-//
-// $(".add-to-cart-btn").on("click", function () {
-//     let quantity = $("#product-quantity").val()
-//     let product_title = $(".product-title").val()
-//     let product_id = $(".product-id").val()
-//     let product_price = $("#current-product-price").text()
-//     let this_val = (this)
-//
-//     console.log("Quantity:", quantity);
-//     console.log("Title:", product_title);
-//     console.log("Product ID:", product_id);
-//     console.log("Product Price:", product_price);
-//     console.log("Current Element:", this_val);
-//
-//     $.ajax({
-//         url: '/add-to-cart',
-//         data: {
-//             'id': product_id,
-//             'qty': quantity,
-//             'title': product_title,
-//             'price': product_price
-//         },
-//         dataType: 'json',
-//         beforeSend: function () {
-//             console.log("Adding product to cart...");
-//         },
-//         success: function (response) {
-//             this.val.html("Item added to cart")
-//             console.log("Added product to cart ...");
-//             $(".cart-items-count").text(response.totalcartitems)
-//         }
-//     })
-// })
 
 
 

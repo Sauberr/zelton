@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from datetime import datetime
+from django.core import serializers
 
-from core.models import Product, Category, Vendor, ProductReview, CartOrder, CartOrderProducts, Address
+from core.models import Product, Category, Vendor, ProductReview, CartOrder, CartOrderProducts, Address, Wishlist
 from taggit.models import Tag
 from core.forms import ProductReviewForm
 from django.template.loader import render_to_string
@@ -13,6 +14,8 @@ from django.urls import reverse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from paypal.standard.forms import PayPalPaymentsForm
+import calendar
+from django.db.models.functions import ExtractMonth
 
 
 def index(request):
@@ -30,7 +33,6 @@ def product_list_view(request):
 
 def product_detail_view(request, pid):
     product = Product.objects.get(pid=pid)
-    # product = get_object_or_404(Product, pid=pid)
     p_image = product.p_images.all()
     products = Product.objects.filter(category=product.category).exclude(pid=pid)
     reviews = ProductReview.objects.filter(product=product).order_by('-date')
@@ -257,9 +259,15 @@ def checkout_view(request):
 
     paypal_payment_button = PayPalPaymentsForm(initial=paypal_dict)
 
+    try:
+        active_address = Address.objects.get(user=request.user, status=True)
+    except:
+        messages.warning(request, 'Please add an address to proceed')
+        active_address = None
+
     return render(request, "core/checkout.html", {"cart_data": request.session['cart_data_obj'],
                       'totalcartitems': len(request.session['cart_data_obj']),
-                    'cart_total_amount': cart_total_amount, 'paypal_payment_button': paypal_payment_button})
+                    'cart_total_amount': cart_total_amount, 'paypal_payment_button': paypal_payment_button, 'active_address': active_address})
 
 
 @login_required
@@ -281,8 +289,17 @@ def payment_failed_view(request):
 
 @login_required
 def customer_dashboard(request):
-    orders = CartOrder.objects.filter(user=request.user).order_by('-id')
+    order_list = CartOrder.objects.filter(user=request.user).order_by('-id')
     address = Address.objects.filter(user=request.user)
+
+    orders = CartOrder.objects.annotate(month=ExtractMonth('order_date')).values('month').annotate(count=Count('id')).values('month', 'count')
+    month = []
+    total_orders = []
+
+    for i in orders:
+        month.append(calendar.month_name[i['month']])
+        total_orders.append(i['count'])
+
 
     if request.method == 'POST':
         address = request.POST.get('address')
@@ -297,8 +314,11 @@ def customer_dashboard(request):
         return redirect('core:dashboard')
 
     context = {
-        'orders': orders,
+        'order_list': order_list,
         'address': address,
+        'orders': orders,
+        'month': month,
+        'total_orders': total_orders,
     }
     return render(request, 'core/dashboard.html', context)
 
@@ -311,6 +331,64 @@ def order_detail(request, id):
         'order_items': order_items,
     }
     return render(request, 'core/order-detail.html', context)
+
+
+def make_address_default(request):
+    id = request.GET['id']
+    Address.objects.update(status=False)
+    Address.objects.filter(id=id).update(status=True)
+    return JsonResponse({'boolean': True})
+
+
+@login_required
+def wishlist_view(request):
+    try:
+        wishlist = Wishlist.objects.all()
+    except:
+        wishlist = None
+    context = {'w': wishlist}
+    return render(request, 'core/wishlist.html', context)
+
+
+def add_to_wishlist(request):
+    product_id = request.GET['id']
+    product = Product.objects.get(id=product_id)
+
+    wishlist_count = Wishlist.objects.filter(product=product, user=request.user).count()
+    print(wishlist_count)
+
+    if wishlist_count > 0:
+        context = {
+            "bool": True
+        }
+    else:
+        new_wishlist = Wishlist.objects.create(
+            user=request.user,
+            product=product,
+        )
+        context = {
+            "bool": True
+        }
+
+    return JsonResponse(context)
+
+
+def remove_wishlist(request):
+    pid = request.GET['id']
+    wishlist = Wishlist.objects.filter(user=request.user)
+
+    wishlist_id = Wishlist.objects.get(id=pid)
+    delete_product = wishlist_id.delete()
+
+    context = {
+        "bool": True,
+        "w": wishlist,
+    }
+    wishlist_json = serializers.serialize('json', wishlist)
+    data = render_to_string("core/async/wishlist-list.html", context)
+    return JsonResponse({"data": data, "w": wishlist_json})
+
+
 
 
 

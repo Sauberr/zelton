@@ -349,5 +349,5 @@ CKEDITOR_5_CONFIGS = {
 
 # PayPal Settings
 
-PAYPAL_RECEIVER_EMAIL = 'sauberr65656@gmail.com'
+PAYPAL_RECEIVER_EMAIL = 'sb-dntpf29889075@business.example.com'
 PAYPAL_TEST = True
