@@ -1,0 +1,22 @@
+[
+   {
+      "model":"core.vendor",
+      "pk":1,
+      "fields":{
+         "vid":"ven46p643j82h",
+         "title":"Sauberr",
+         "image":"vendor.jpg",
+         "cover_image":"vendor.jpg",
+         "description":"<p>I am an Amazing vendor</p>",
+         "address":"123 Main Street, London",
+         "contact":"123 (456) 7890",
+         "chat_resp_time":"100",
+         "shipping_on_time":"100",
+         "authentic_rating":"100",
+         "days_return":"100",
+         "warranty_period":"100",
+         "user":1,
+         "date":"2024-04-07T16:23:16.126Z"
+      }
+   }
+]

@@ -186,7 +186,7 @@ $(document).ready(function () {
     })
 
 
-    $(".delete-product").on("click", function () {
+    $(document).on("click", '.delete-product', function () {
 
         let product_id = $(this).attr("data-product")
         let this_val = $(this)
@@ -210,6 +210,7 @@ $(document).ready(function () {
         })
 
     })
+
 
     $(".update-product").on("click", function () {
 
@@ -275,7 +276,7 @@ $(document).ready(function () {
         let this_val = $(this)
 
 
-        console.log("PRoduct ID IS", product_id);
+        console.log("Product ID IS", product_id);
 
         $.ajax({
             url: "/add-to-wishlist",

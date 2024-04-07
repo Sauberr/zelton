@@ -17,7 +17,7 @@ from taggit.models import Tag
 from core.forms import ProductReviewForm
 from core.models import (Address, CartOrder, CartOrderProducts, Category,
                          Product, ProductReview, Vendor, Wishlist)
-from userauths.models import ContactUs
+from userauths.models import ContactUs, Profile
 
 
 def index(request):
@@ -294,6 +294,8 @@ def customer_dashboard(request):
     order_list = CartOrder.objects.filter(user=request.user).order_by('-id')
     address = Address.objects.filter(user=request.user)
 
+    profile = Profile.objects.get(user=request.user)
+
     orders = CartOrder.objects.annotate(month=ExtractMonth('order_date')).values('month').annotate(count=Count('id')).values('month', 'count')
     month = []
     total_orders = []
@@ -316,6 +318,7 @@ def customer_dashboard(request):
         return redirect('core:dashboard')
 
     context = {
+        'profile': profile,
         'order_list': order_list,
         'address': address,
         'orders': orders,
