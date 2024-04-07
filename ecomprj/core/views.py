@@ -1,21 +1,23 @@
-from django.contrib.auth.decorators import login_required
-from django.db.models import Avg, Count
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
-from datetime import datetime
-from django.core import serializers
-
-from core.models import Product, Category, Vendor, ProductReview, CartOrder, CartOrderProducts, Address, Wishlist
-from taggit.models import Tag
-from core.forms import ProductReviewForm
-from django.template.loader import render_to_string
-from django.contrib import messages
-from django.urls import reverse
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from paypal.standard.forms import PayPalPaymentsForm
 import calendar
+from datetime import datetime
+
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core import serializers
+from django.db.models import Avg, Count
 from django.db.models.functions import ExtractMonth
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from paypal.standard.forms import PayPalPaymentsForm
+from taggit.models import Tag
+
+from core.forms import ProductReviewForm
+from core.models import (Address, CartOrder, CartOrderProducts, Category,
+                         Product, ProductReview, Vendor, Wishlist)
+from userauths.models import ContactUs
 
 
 def index(request):
@@ -388,6 +390,29 @@ def remove_wishlist(request):
     data = render_to_string("core/async/wishlist-list.html", context)
     return JsonResponse({"data": data, "w": wishlist_json})
 
+
+def contact(request):
+    return render(request, 'core/contact.html')
+
+
+def ajax_contact_form(request):
+    full_name = request.GET['full_name']
+    email = request.GET['email']
+    phone = request.GET['phone']
+    subject = request.GET['subject']
+    message = request.GET['message']
+
+    contact = ContactUs.objects.create(
+        full_name=full_name,
+        email=email,
+        phone=phone,
+        subject=subject,
+        message=message,
+    )
+
+    data = {'bool': True, 'message': 'Message sent successfully'}
+
+    return JsonResponse({'data': data})
 
 
 

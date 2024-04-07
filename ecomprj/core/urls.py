@@ -1,8 +1,15 @@
-from django.urls import path, include
-from core.views import (index, product_list_view, category_list_view, category_product_list_view, vendor_list_view,
-        vendor_detail_view, product_detail_view, tag_list, ajax_add_review, search_view, filter_product, add_to_cart,
-        cart_view, delete_item_from_cart, update_cart, checkout_view, payment_completed_view, payment_failed_view,
-        customer_dashboard, order_detail, make_address_default, wishlist_view, add_to_wishlist, remove_wishlist)
+from django.urls import include, path
+
+from core.views import (add_to_cart, add_to_wishlist, ajax_add_review,
+                        ajax_contact_form, cart_view, category_list_view,
+                        category_product_list_view, checkout_view, contact,
+                        customer_dashboard, delete_item_from_cart,
+                        filter_product, index, make_address_default,
+                        order_detail, payment_completed_view,
+                        payment_failed_view, product_detail_view,
+                        product_list_view, remove_wishlist, search_view,
+                        tag_list, update_cart, vendor_detail_view,
+                        vendor_list_view, wishlist_view)
 
 app_name = 'core'
 
@@ -68,6 +75,9 @@ urlpatterns = [
     # Remove from wishlist
     path('remove-from-wishlist/', remove_wishlist, name='remove-from-wishlist'),
 
+    # Contact
+    path('contact/', contact, name='contact'),
 
+    path('ajax-contact-form/', ajax_contact_form, name='ajax-contact-form'),
 
 ]

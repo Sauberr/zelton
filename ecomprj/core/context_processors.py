@@ -1,6 +1,7 @@
-from core.models import Category, Address, Vendor, Product, Wishlist
-from django.db.models import Min, Max
 from django.contrib import messages
+from django.db.models import Max, Min
+
+from core.models import Address, Category, Product, Vendor, Wishlist
 
 
 def default(request):

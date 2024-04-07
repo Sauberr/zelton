@@ -1,10 +1,10 @@
 from django.db import models
-from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
-from userauths.models import User
-from taggit.managers import TaggableManager
 from django_ckeditor_5.fields import CKEditor5Field
+from shortuuid.django_fields import ShortUUIDField
+from taggit.managers import TaggableManager
 
+from userauths.models import User
 
 STATUS_CHOICE = (
     ('processing', 'Processing'),
