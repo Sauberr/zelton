@@ -40,4 +40,4 @@ class Profile(models.Model):
         verbose_name_plural = 'Profile'
 
     def __str__(self):
-        return self.full_name
+            return f"{self.user.username} - {self.full_name} = {self.bio}"
