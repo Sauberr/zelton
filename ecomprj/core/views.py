@@ -216,6 +216,81 @@ def update_cart(request):
     return JsonResponse({"data": context, 'totalcartitems': len(request.session['cart_data_obj'])})
 
 
+# def save_checkout_info(request):
+#     cart_total_amount = 0
+#     total_amount = 0
+#
+#     if request.method == "POST":
+#         full_name = request.POST.get('full_name')
+#         email = request.POST.get('email')
+#         address = request.POST.get('address')
+#         mobile = request.POST.get('mobile')
+#         city = request.POST.get('city')
+#         state = request.POST.get('state')
+#         country = request.POST.get('country')
+#
+#         request.session['full_name'] = full_name
+#         request.session['email'] = email
+#         request.session['address'] = address
+#         request.session['mobile'] = mobile
+#         request.session['city'] = city
+#         request.session['state'] = state
+#         request.session['country'] = country
+#
+#         # Checking if cart_data_obj session exists
+#         if 'cart_data_obj' in request.session:
+#             # Getting total amount for Paypal amount
+#             for p_id, item in request.session['cart_data_obj'].items():
+#                 total_amount += int(item['qty']) * float(item['price'])
+#
+#             # Create order object
+#             order = CartOrder.objects.create(
+#                 user=request.user,
+#                 price=total_amount,
+#                 full_name=full_name,
+#                 email=email,
+#                 address=address,
+#                 mobile=mobile,
+#                 city=city,
+#                 state=state,
+#                 country=country,
+#             )
+#
+#             del request.session['full_name']
+#             del request.session['email']
+#             del request.session['address']
+#             del request.session['mobile']
+#             del request.session['city']
+#             del request.session['state']
+#             del request.session['country']
+#
+#             # Getting total amount for the cart
+#             for p_id, item in request.session['cart_data_obj'].items():
+#                 cart_total_amount += int(item['qty']) * float(item['price'])
+#
+#                 cart_order_products = CartOrderProducts.objects.create(
+#                     order=order,
+#                     invoice_no='INVOICE_NO-' + str(order.id),
+#                     item=item['title'],
+#                     image=item['image'],
+#                     qty=item['qty'],
+#                     price=item['price'],
+#                     total=float(item['qty']) * float(item['price'])
+#                 )
+#         return redirect('core:checkout', order.oid)
+#     return redirect('core:checkout', order.oid)
+
+
+# def checkout(request, oid):
+#     order = CartOrder.objects.get(oid=oid)
+#     order_items = CartOrderProducts.objects.filter(order=order)
+#
+#     context = {'order': order, 'order_items': order_items}
+#     return render(request, 'core/checkout.html', context)
+
+
+
+
 @login_required
 def checkout_view(request):
     cart_total_amount = 0
@@ -303,7 +378,6 @@ def customer_dashboard(request):
     for i in orders:
         month.append(calendar.month_name[i['month']])
         total_orders.append(i['count'])
-
 
     if request.method == 'POST':
         address = request.POST.get('address')

@@ -178,19 +178,6 @@
                     <div class="header-right">
                         <div class="search-style-2">
                             <form action="{% url 'core:search' %}" method="GET">
-                                <select class="select-active">
-                                    <option>All Categories</option>
-                                    <option>Milks and Dairies</option>
-                                    <option>Wines & Alcohol</option>
-                                    <option>Clothing & Beauty</option>
-                                    <option>Pet Foods & Toy</option>
-                                    <option>Fast food</option>
-                                    <option>Baking material</option>
-                                    <option>Vegetables</option>
-                                    <option>Fresh Seafood</option>
-                                    <option>Noodles & Rice</option>
-                                    <option>Ice cream</option>
-                                </select>
                                 <input type="text" placeholder="Search for items..." name="q" />
                                 <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </form>
@@ -224,16 +211,16 @@
                                     </div>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a href="page-account.html">
+                                    <a href="{% url 'core:dashboard' %}">
                                         <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" />
                                     </a>
-                                    <a href="page-account.html"><span class="lable ml-0">Account</span></a>
+                                    <a href="{% url 'core:dashboard' %}"><span class="lable ml-0">Account</span></a>
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
                                         <ul>
                                             <li><a href="{% url 'core:dashboard' %}"><i class="fi fi-rs-user mr-10"></i>My Account</a></li>
                                             <li><a href="page-account.html"><i class="fi fi-rs-location-alt mr-10"></i>Order Tracking</a></li>
                                             <li><a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My Voucher</a></li>
-                                            <li><a href="shop-wishlist.html"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a></li>
+                                            <li><a href="{% url 'core:wishlist' %}"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a></li>
                                             {% if user.is_superuser or user.is_staff %}
                                             <li><a href="{% url 'admin:index' %}"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a></li>
                                             {% endif %}
@@ -391,7 +378,7 @@
                                     <button class="btn" type="submit">Subscribe</button>
                                 </form>
                             </div>
-                            <img src="{% static 'assets/imgs/banner/banner-9.png' %}" alt="newsletter" />
+                            <img src="{% static 'assets/imgs/banner/slider_3.jpg' %}" alt="newsletter" />
                         </div>
                     </div>
                 </div>
@@ -493,7 +480,7 @@
                             <li><a href="#">Delivery Information</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                             <li><a href="#">Terms &amp; Conditions</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="{% url 'core:contact' %}">Contact Us</a></li>
                             <li><a href="#">Support Center</a></li>
                             <li><a href="#">Careers</a></li>
                         </ul>
@@ -501,37 +488,13 @@
                     <div class="footer-link-widget col">
                         <h4 class="widget-title">Account</h4>
                         <ul class="footer-list mb-sm-5 mb-md-0">
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="#">View Cart</a></li>
-                            <li><a href="#">My Wishlist</a></li>
+                            <li><a href="{% url 'userauths:sign-in' %}">Sign In</a></li>
+                            <li><a href="{% url 'core:cart' %}">View Cart</a></li>
+                            <li><a href="{% url 'core:wishlist' %}">My Wishlist</a></li>
                             <li><a href="#">Track My Order</a></li>
                             <li><a href="#">Help Ticket</a></li>
                             <li><a href="#">Shipping Details</a></li>
                             <li><a href="#">Compare products</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-link-widget col">
-                        <h4 class="widget-title">Corporate</h4>
-                        <ul class="footer-list mb-sm-5 mb-md-0">
-                            <li><a href="#">Become a Vendor</a></li>
-                            <li><a href="#">Affiliate Program</a></li>
-                            <li><a href="#">Farm Business</a></li>
-                            <li><a href="#">Farm Careers</a></li>
-                            <li><a href="#">Our Suppliers</a></li>
-                            <li><a href="#">Accessibility</a></li>
-                            <li><a href="#">Promotions</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-link-widget col">
-                        <h4 class="widget-title">Popular</h4>
-                        <ul class="footer-list mb-sm-5 mb-md-0">
-                            <li><a href="#">Milk & Flavoured Milk</a></li>
-                            <li><a href="#">Butter and Margarine</a></li>
-                            <li><a href="#">Eggs Substitutes</a></li>
-                            <li><a href="#">Marmalades</a></li>
-                            <li><a href="#">Sour Cream and Dips</a></li>
-                            <li><a href="#">Tea & Kombucha</a></li>
-                            <li><a href="#">Cheese</a></li>
                         </ul>
                     </div>
                     <div class="footer-link-widget widget-install-app col">

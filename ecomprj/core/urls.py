@@ -80,4 +80,6 @@ urlpatterns = [
 
     path('ajax-contact-form/', ajax_contact_form, name='ajax-contact-form'),
 
+    # path('save-checkout-info/', save_checkout_info, name='save-checkout-info')
+
 ]
