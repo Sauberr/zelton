@@ -1,6 +1,7 @@
 {% extends 'partials/base.html' %}
 {% load static humanize %}
 
+{% block title %} {{ title }} {% endblock %}
 
 {% block content %}
     <main class="main">
@@ -2940,9 +2941,9 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-6">
                                 <div class="banner-img">
-                                    <img src="{% static 'assets/imgs/banner/banner-1.png' %}" alt="" />
+                                    <img src="{% static 'assets/imgs/banner/boots.jpg' %}" alt="" width="450" height="275" />
                                     <div class="banner-text">
-                                        <h4>
+                                        <h4 style="color: white;">
                                             Everyday Fresh & <br />Clean with Our<br /> Products
                                         </h4>
                                         <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
@@ -2951,9 +2952,9 @@
                             </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="banner-img">
-                                    <img src="{% static 'assets/imgs/banner/banner-2.png' %}" alt="" />
+                                    <img src="{% static 'assets/imgs/banner/boots4.jpg' %}" alt="" width="450" height="275" />
                                     <div class="banner-text">
-                                        <h4>
+                                        <h4 style="color: white;">
                                             Make your Breakfast<br /> Healthy and Easy
                                         </h4>
                                         <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
@@ -2962,9 +2963,9 @@
                             </div>
                             <div class="col-lg-4 d-md-none d-lg-flex">
                                 <div class="banner-img mb-sm-0">
-                                    <img src="{% static 'assets/imgs/banner/banner-3.png' %}" alt="" />
+                                    <img src="{% static 'assets/imgs/banner/boots3.jpg' %}" alt="" width="450" height="275"/>
                                     <div class="banner-text">
-                                        <h4>The best Organic <br />Products Online</h4>
+                                        <h4 style="color: white;">The best Organic <br />Products Online</h4>
                                         <a href="shop-grid-right.html" class="btn btn-xs">Shop Now <i class="fi-rs-arrow-small-right"></i></a>
                                     </div>
                                 </div>

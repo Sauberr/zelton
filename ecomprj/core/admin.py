@@ -50,6 +50,7 @@ admin.site.register(CartOrderProducts, CartOrderProductsAdmin)
 admin.site.register(ProductReview, ProductReviewAdmin)
 admin.site.register(Wishlist, WishlistAdmin)
 admin.site.register(Address, AddressAdmin)
+admin.site.register(Coupon)
 
 
 

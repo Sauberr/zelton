@@ -14,6 +14,11 @@ import os
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,6 +33,8 @@ SECRET_KEY = 'django-insecure-r4ko3ub!cadxj8gfm1tf##2re0+^0zjapw!vr7)dba7n^c8$yw
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
 # Application definition
@@ -351,3 +358,6 @@ CKEDITOR_5_CONFIGS = {
 
 PAYPAL_RECEIVER_EMAIL = 'sb-dntpf29889075@business.example.com'
 PAYPAL_TEST = True
+
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
