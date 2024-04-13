@@ -4,6 +4,42 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
+
+<head>
+        <style>
+            input[type="range"] {
+            -webkit-appearance: none;
+            margin-right: 15px;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 5px;
+            background-image: linear-gradient(#3bb77e, #3bb77e);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #3bb77e;
+            cursor: ew-resize;
+            box-shadow: 0 0 2px 0 #555;
+            transition: background .3s ease-in-out;
+            }
+
+            input[type=range]::-webkit-slider-runnable-track  {
+            -webkit-appearance: none;
+            box-shadow: none;
+            border: none;
+            background: transparent;
+            }
+        </style>
+
+    </head>
+
+
     <main class="main">
         <div class="container mb-30">
             <div class="row flex-row-reverse">
@@ -59,8 +95,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1">
-                                                    <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                    <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'core:wishlist' %}"><i class="fi-rs-heart"></i></a>
                                                     <a href="{% url 'core:product-detail' p.pid %}" class="action-btn"><i class="fi-rs-eye"></i></a>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
@@ -72,12 +107,6 @@
                                                     <a href="{% url 'core:category-product-list' p.category.cid %}">{{ p.category|title }}</a>
                                                 </div>
                                                 <h2><a href="{% url 'core:product-detail' p.pid %}">{{ p.title }}</a></h2>
-                                                <div class="product-rate-cover">
-                                                    <div class="product-rate d-inline-block">
-                                                        <div class="product-rating" style="width: 90%"></div>
-                                                    </div>
-                                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
-                                                </div>
                                                 <div>
                                                     <span class="font-small text-muted">By <a href="{% url 'core:vendor-detail' p.vendor.vid %}">{{ p.vendor.title }}</a></span>
                                                 </div>
@@ -2985,20 +3014,6 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    <!-- Fillter By Price -->
-                    <div class="sidebar-widget price_range range mb-30">
-                        <h5 class="section-title style-1 mb-30">Fill by price</h5>
-                        <div class="price-filter">
-                            <div class="price-filter-inner">
-                                <div id="slider-range" class="mb-20"></div>
-                                <div class="d-flex justify-content-between">
-                                    <div class="caption">From: <strong id="slider-range-value1" class="text-brand"></strong></div>
-                                    <div class="caption">To: <strong id="slider-range-value2" class="text-brand"></strong></div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
-                    </div>
                     <!-- Product sidebar Widget -->
                     <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
                         <h5 class="section-title style-1 mb-30">New products</h5>
@@ -3059,5 +3074,7 @@
         <!--End 4 columns-->
     </main>
 
+
+<script src="{% static 'assets/js/function.js' %}"></script>
 
 {% endblock %}

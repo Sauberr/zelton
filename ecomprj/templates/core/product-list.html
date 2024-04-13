@@ -94,29 +94,13 @@
                                 <div class="card">
                                     <h5 class="mb-30">By Tags</h5>
                                     <div class="sidebar-widget widget-tags">
+                                        {% for t in tags %}
                                         <ul class="tags-list">
-                                            <li class="hover-up">
-                                                <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Milk</a>
-                                            </li>
-                                            <li class="hover-up">
-                                                <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Broccoli</a>
-                                            </li>
-                                            <li class="hover-up">
-                                                <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Smoothie</a>
-                                            </li>
-                                            <li class="hover-up">
-                                                <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Fruit</a>
-                                            </li>
-                                            <li class="hover-up mr-0">
-                                                <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Salad</a>
-                                            </li>
-                                            <li class="hover-up mr-0">
-                                                <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Appetizer</a>
-                                            </li>
                                             <li class="hover-up mr-0 mb-0">
-                                                <a href="blog-category-grid.html"><i class="fi-rs-cross mr-10"></i>Appetizer</a>
+                                                <a href="{% url 'core:tags' t.slug %}"><i class="fi-rs-cross mr-10"></i>{{ t.name }}</a>
                                             </li>
                                         </ul>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +132,7 @@
                 <div class="col-12">
                     <div class="shop-product-fillter">
                         <div class="totall-product">
-                            <p>We found <strong class="text-brand">29</strong> items for you!</p>
+                            <p>We found <strong class="text-brand">{{ products.count }}</strong> items for you!</p>
                         </div>
                         <div class="sort-by-product-area">
                             <div class="sort-by-cover mr-10">
@@ -203,9 +187,8 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1">
-                                                    <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                                    <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                                    <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'core:wishlist' %}"><i class="fi-rs-heart"></i></a>
+                                                    <a href="{% url 'core:product-detail' p.pid %}" class="action-btn"><i class="fi-rs-eye"></i></a>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
                                                     <span class="hot">- {{ p.get_percentage|floatformat:0 }}%</span>
@@ -213,14 +196,10 @@
                                             </div>
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
-                                                    <a href="shop-grid-right.html">{{ p.category }}</a>
+                                                    <a href="{% url 'core:category-product-list' p.category.cid %}">{{ p.category }}</a>
                                                 </div>
                                                 <h2><a href="{% url 'core:product-detail' p.pid %}">{{ p.title }}</a></h2>
                                                 <div class="product-rate-cover">
-                                                    <div class="product-rate d-inline-block">
-                                                        <div class="product-rating" style="width: 90%"></div>
-                                                    </div>
-                                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
                                                 </div>
                                                 <div>
                                                     <span class="font-small text-muted">By <a href="{% url 'core:vendor-detail' p.vendor.vid %}">{{ p.vendor.title }}</a></span>
@@ -246,23 +225,23 @@
                         {% endfor %}
                         <!--end product card-->
                     <!--product grid-->
-                    <div class="pagination-area mt-20 mb-20">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-start">
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fi-rs-arrow-small-left"></i></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fi-rs-arrow-small-right"></i></a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+<!--                    <div class="pagination-area mt-20 mb-20">-->
+<!--                        <nav aria-label="Page navigation example">-->
+<!--                            <ul class="pagination justify-content-start">-->
+<!--                                <li class="page-item">-->
+<!--                                    <a class="page-link" href="#"><i class="fi-rs-arrow-small-left"></i></a>-->
+<!--                                </li>-->
+<!--                                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                                <li class="page-item active"><a class="page-link" href="#">2</a></li>-->
+<!--                                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                                <li class="page-item"><a class="page-link dot" href="#">...</a></li>-->
+<!--                                <li class="page-item"><a class="page-link" href="#">6</a></li>-->
+<!--                                <li class="page-item">-->
+<!--                                    <a class="page-link" href="#"><i class="fi-rs-arrow-small-right"></i></a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </nav>-->
+<!--                    </div>-->
                     <section class="section-padding pb-5">
                         <div class="section-title">
                             <h3 class="">Deals Of The Day</h3>

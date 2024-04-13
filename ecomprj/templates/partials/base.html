@@ -105,7 +105,7 @@
                                 </div>
                                 <div class="font-xs">
                                     <ul>
-                                        <li class="mb-5">Vendor: <span class="text-brand">Nest</span></li>
+                                        <li class="mb-5">Vendor: <span class="text-brand">Zerton</span></li>
                                         <li class="mb-5">MFG:<span class="text-brand"> Jun 4.2022</span></li>
                                     </ul>
                                 </div>
@@ -147,20 +147,6 @@
                         <div class="header-info header-info-right">
                             <ul>
                                 <li>Need help? Call Us: <strong class="text-brand"> + 1800 900</strong></li>
-                                <li>
-                                    <a class="language-dropdown-active" href="#">English <i class="fi-rs-angle-small-down"></i></a>
-                                    <ul class="language-dropdown">
-                                        <li>
-                                            <a href="#"><img src="{% static 'assets/imgs/theme/flag-fr.png' %}" alt="" />Français</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="{% static 'assets/imgs/theme/flag-dt.png' %}" alt="" />Deutsch</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><img src="{% static 'assets/imgs/theme/flag-ru.png' %}" alt="" />Pусский</a>
-                                        </li>
-                                    </ul>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -171,7 +157,7 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="{% url 'core:index' %}"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo" /></a>
+                        <a href="{% url 'core:index' %}"><img src="{% static 'assets/imgs/theme/logo.png' %}" alt="logo" /></a>
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
@@ -184,7 +170,7 @@
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
                                     <a href="{% url 'core:wishlist' %}">
-                                        <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
+                                        <img class="svgInject" alt="Zerton" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
                                         {% if request.user.is_authenticated %}
                                         <span class="pro-count blue">{{ wishlist.count }}</span>
                                         {% else %}
@@ -195,7 +181,7 @@
                                 </div>
                                 <div class="header-action-icon-2">
                                     <a class="mini-cart-icon" href="{% url 'core:cart' %}">
-                                        <img alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
+                                        <img alt="Zerton" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
                                         <span class="pro-count blue cart-items-count">{{ request.session.cart_data_obj|length }}</span>
                                     </a>
                                     <a href="{% url 'core:cart' %}"><span class="lable">Cart</span></a>
@@ -209,7 +195,7 @@
                                 </div>
                                 <div class="header-action-icon-2">
                                     <a href="{% url 'core:dashboard' %}">
-                                        <img class="svgInject" alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" />
+                                        <img class="svgInject" alt="Zerton" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" />
                                     </a>
                                     <a href="{% url 'core:dashboard' %}"><span class="lable ml-0">Account</span></a>
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
@@ -308,13 +294,13 @@
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
                                 <a href="shop-wishlist.html">
-                                    <img alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
+                                    <img alt="Zerton" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
                                     <span class="pro-count white">4</span>
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="{% url 'core:cart' %}">
-                                    <img alt="Nest" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
+                                    <img alt="Zerton" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
                                     <span class="pro-count white cart-items-count">{{ request.session.cart_data_obj|length }}</span>
                                 </a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
@@ -365,7 +351,7 @@
                                 <h2 class="mb-20">
                                     Stay home & get your daily <br /> needs from our shop
                                 </h2>
-                                <p class="mb-45">Start You'r Daily Shopping with <span class="text-brand">Nest Mart</span></p>
+                                <p class="mb-45">Start You'r Daily Shopping with <span class="text-brand">Zerton</span></p>
                                 <form class="form-subcriber d-flex">
                                     <input type="email" placeholder="Your emaill address" />
                                     <button class="btn" type="submit">Subscribe</button>
@@ -455,7 +441,7 @@
                     <div class="col">
                         <div class="widget-about font-md mb-md-3 mb-lg-3 mb-xl-0">
                             <div class="logo mb-30">
-                                <a href="{% url 'core:index' %}" class="mb-15"><img src="{% static 'assets/imgs/theme/logo.svg' %}" alt="logo" /></a>
+                                <a href="{% url 'core:index' %}" class="mb-15"><img src="{% static 'assets/imgs/theme/logo.png' %}" alt="logo" /></a>
                             </div>
                             <ul class="contact-infor">
                                 <li><img src="{% static 'assets/imgs/theme/icons/icon-location.svg' %}" alt="" /><strong>Address: </strong> <span>5171 W Campbell Ave undefined Kent, Utah 53127 United States</span></li>
@@ -508,7 +494,7 @@
                     <div class="footer-bottom"></div>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-md-6">
-                    <p class="font-sm mb-0">&copy; {% now 'Y' %}, <strong class="text-brand">Nest</strong> - Super great <br /></p>
+                    <p class="font-sm mb-0">&copy; {% now 'Y' %}, <strong class="text-brand">Zerton</strong> - Super great <br /></p>
                 </div>
                 <div class="col-xl-4 col-lg-6 text-center d-none d-xl-block">
                     <div class="hotline d-lg-inline-flex mr-30">

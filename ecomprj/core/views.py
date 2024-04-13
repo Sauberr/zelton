@@ -34,7 +34,8 @@ def index(request):
 
 def product_list_view(request):
     products = Product.objects.filter(product_status='published')
-    context = {'products': products, 'title': 'Products'}
+    tags = Tag.objects.all()
+    context = {'products': products, 'title': 'Products', 'tags': tags}
     return render(request, 'core/product-list.html', context)
 
 
