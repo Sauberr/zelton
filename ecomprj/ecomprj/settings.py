@@ -61,6 +61,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     # Custom Apps
     'core',
     'userauths',
+    'useradmin',
 )
 
 MIDDLEWARE: Tuple[str, ...] = (
