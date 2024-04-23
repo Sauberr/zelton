@@ -72,7 +72,3 @@ def profile_update(request):
     context = {'form': form, 'profile': profile}
     return render(request, 'userauths/profile-edit.html', context)
 
-
-
-
-

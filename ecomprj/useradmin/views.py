@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from core.models import CartOrder, Product, Category
+from core.models import CartOrder, Product, Category, CartOrderProducts
 from django.db.models import Sum
 from userauths.models import User
 
@@ -55,7 +55,7 @@ def add_product(request):
             new_form.user = request.user
             new_form.save()
             form.save_m2m()
-            return redirect('useradmin:dashboard')
+            return redirect('useradmin:products')
     else:
         form = AddProductForm()
 
@@ -65,3 +65,56 @@ def add_product(request):
     }
 
     return render(request, 'useradmin/add-product.html', context)
+
+
+def edit_product(request, pid):
+    product = Product.objects.get(pid=pid)
+    if request.method == 'POST':
+        form = AddProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.user = request.user
+            new_form.save()
+            form.save_m2m()
+            return redirect('useradmin:edit_product', product.pid)
+    else:
+        form = AddProductForm(instance=product)
+
+    context = {
+        "form": form,
+        "title": "Edit Product",
+        "product": product,
+    }
+
+    return render(request, 'useradmin/edit-product.html', context)
+
+
+def delete_product(request, pid):
+    product = Product.objects.get(pid=pid)
+    product.delete()
+    return redirect('useradmin:products')
+
+
+def orders(request):
+    orders = CartOrder.objects.all()
+
+    context = {
+        "orders": orders,
+        "title": "Orders",
+    }
+
+    return render(request, 'useradmin/orders.html', context)
+
+
+def order_detail(request, id):
+    order = CartOrder.objects.get(id=id)
+    order_items = CartOrderProducts.objects.filter(order=order)
+
+    context = {
+        "order": order,
+        "order_items": order_items,
+        "title": "Order Detail",
+    }
+
+    return render(request, 'useradmin/order_detail.html', context)
+

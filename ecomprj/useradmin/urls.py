@@ -1,5 +1,5 @@
 from django.urls import path
-from useradmin.views import dashboard, products, add_product
+from useradmin.views import dashboard, products, add_product, edit_product, delete_product, order_detail, orders
 
 app_name = "useradmin"
 
@@ -7,4 +7,8 @@ urlpatterns = [
     path("dashboard/", dashboard, name="dashboard"),
     path("products/", products, name="products"),
     path("add-product/", add_product, name="add_product"),
+    path("edit_product/<pid>/", edit_product, name="edit_product"),
+    path("delete_product/<pid>/", delete_product, name="delete_product"),
+    path("orders/", orders, name="orders"),
+    path("order_detail/<id>/", order_detail, name="order_detail"),
 ]
