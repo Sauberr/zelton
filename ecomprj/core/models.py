@@ -145,7 +145,7 @@ class CartOrder(models.Model):
     tracking_website_address = models.CharField(max_length=100, null=True, blank=True)
     paid_status = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
-    product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default='processing')
+    product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default='processing', null=True, blank=True)
     sku = ShortUUIDField(null=True, blank=True, length=5, prefix='sku', alphabet='12345678090')
     oid = ShortUUIDField(null=True, blank=True, length=5, alphabet='12345678090')
     stripe_payment_intent = models.CharField(max_length=1000, null=True, blank=True)

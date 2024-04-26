@@ -3,6 +3,8 @@ from core.models import CartOrder, Product, Category, CartOrderProducts
 from django.db.models import Sum
 from userauths.models import User
 
+from django.contrib import messages
+
 from useradmin.forms import AddProductForm
 
 import datetime
@@ -117,4 +119,16 @@ def order_detail(request, id):
     }
 
     return render(request, 'useradmin/order_detail.html', context)
+
+
+def change_order_status(request, id):
+    order = CartOrder.objects.get(id=id)
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        order.product_status = status
+        order.save()
+        messages.success(request, f'Order status change to {status}')
+
+    return redirect('useradmin:order_detail', order.id)
+
 
