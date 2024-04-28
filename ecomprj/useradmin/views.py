@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from core.models import CartOrder, Product, Category, CartOrderProducts
+from core.models import CartOrder, Product, Category, CartOrderProducts, ProductReview
 from django.db.models import Sum
 from userauths.models import User
 
@@ -131,4 +131,23 @@ def change_order_status(request, id):
 
     return redirect('useradmin:order_detail', order.id)
 
+
+def shop_page(request):
+    products = Product.objects.all()
+    revenue = CartOrder.objects.aggregate(price=Sum('price'))
+    total_sales = CartOrderProducts.objects.filter(order__paid_status=True).aggregate(qty=Sum('qty'))
+    context = {
+        "products": products,
+        "revenue": revenue,
+        "total_sales": total_sales,
+        "title": "Shop Page",
+    }
+
+    return render(request, 'useradmin/shop_page.html', context)
+
+
+def reviews(request):
+    reviews = ProductReview.objects.all()
+    context = {'reviews': reviews, 'title': 'Reviews'}
+    return render(request, 'useradmin/reviews.html', context)
 

@@ -1,5 +1,4 @@
 import calendar
-from datetime import datetime
 
 from django.conf import settings
 from django.contrib import messages
@@ -12,7 +11,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from paypal.standard.forms import PayPalPaymentsForm
 from taggit.models import Tag
 
 from core.forms import ProductReviewForm
@@ -353,6 +351,25 @@ def create_checkout_session(request, oid):
     order.save()
 
     return JsonResponse({'sessionId': checkout_session['id']})
+
+
+@login_required
+def payment_details(request, oid):
+    order = CartOrder.objects.get(oid=oid)
+    cart_total = 0
+    if 'cart_data_obj' in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total += float(item['price']) * int(item['qty'])
+    cart_total -= float(order.saved)
+    context = {
+        'order': order,
+        'cart_data': request.session['cart_data_obj'],
+        'totalcartitems': len(request.session['cart_data_obj']),
+        'cart_total': cart_total,
+        'saved': order.saved,
+        'title': 'Payment Details',
+    }
+    return render(request, 'core/payment-details.html', context)
 
 
 @login_required
