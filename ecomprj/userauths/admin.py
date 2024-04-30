@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from userauths.models import ContactUs, User, Profile
+from userauths.models import ContactUs, Profile, User
 
 
 class UserAdmin(admin.ModelAdmin):

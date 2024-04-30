@@ -2,8 +2,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
-from userauths.forms import UserRegisterForm, ProfileForm
-from userauths.models import User, Profile
+from userauths.forms import ProfileForm, UserRegisterForm
+from userauths.models import Profile, User
 
 
 def register_view(request):

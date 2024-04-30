@@ -32,8 +32,10 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=200)
     bio = models.CharField(max_length=200, null=True, blank=True)
-    image = models.ImageField(upload_to='image')
+    image = models.ImageField(upload_to='image', null=True, blank=True)
     phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
     verified = models.BooleanField(default=False)
 
     class Meta:

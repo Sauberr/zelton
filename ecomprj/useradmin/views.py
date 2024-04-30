@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
-from core.models import CartOrder, Product, Category, CartOrderProducts, ProductReview
-from django.db.models import Sum
-from userauths.models import User
+import datetime
 
 from django.contrib import messages
+from django.db.models import Sum
+from django.shortcuts import redirect, render
 
+from core.models import (CartOrder, CartOrderProducts, Category, Product,
+                         ProductReview)
 from useradmin.forms import AddProductForm
-
-import datetime
+from userauths.models import Profile, User
 
 
 def dashboard(request):
@@ -150,4 +150,39 @@ def reviews(request):
     reviews = ProductReview.objects.all()
     context = {'reviews': reviews, 'title': 'Reviews'}
     return render(request, 'useradmin/reviews.html', context)
+
+
+def settings(request):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        image = request.FILES.get('image')
+        full_name = request.POST.get('full_name')
+        phone = request.POST.get('phone')
+        bio = request.POST.get('bio')
+        address = request.POST.get('address')
+        country = request.POST.get('country')
+
+        if image != None:
+            profile.image = image
+
+        profile.full_name = full_name
+        profile.phone = phone
+        profile.bio = bio
+        profile.address = address
+        profile.country = country
+
+        profile.save()
+        messages.success(request, 'Profile updated successfully')
+        return redirect('useradmin:settings')
+
+    context = {
+        'profile': profile,
+        'title': 'Settings',
+    }
+
+    return render(request, 'useradmin/settings.html', context)
+
+
+
 

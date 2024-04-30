@@ -1,5 +1,6 @@
 import calendar
 
+import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -15,12 +16,8 @@ from taggit.models import Tag
 
 from core.forms import ProductReviewForm
 from core.models import (Address, CartOrder, CartOrderProducts, Category,
-                         Product, ProductReview, Vendor, Wishlist, Coupon)
+                         Coupon, Product, ProductReview, Vendor, Wishlist)
 from userauths.models import ContactUs, Profile
-
-import stripe
-
-from django.conf import settings
 
 
 def index(request):
