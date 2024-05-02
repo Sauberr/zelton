@@ -14,8 +14,7 @@ def register_view(request):
             username = form.cleaned_data.get('username')
             messages.success(request, f"{username} account created successfully")
             new_user = authenticate(username=form.cleaned_data['email'],
-                                    password=form.cleaned_data['password1']
-            )
+                                    password=form.cleaned_data['password1'])
             login(request, new_user)
             return redirect('core:index')
     else:
@@ -58,6 +57,7 @@ def logout_view(request):
 
 def profile_update(request):
     profile = Profile.objects.get(user=request.user)
+
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
@@ -71,4 +71,3 @@ def profile_update(request):
 
     context = {'form': form, 'profile': profile}
     return render(request, 'userauths/profile-edit.html', context)
-

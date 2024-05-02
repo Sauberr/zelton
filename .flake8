@@ -1,4 +1,4 @@
 [flake8]
 exclude=migrations, venv
-ignore=F401,F405
+ignore=F401,F405,E402,E501,E731,W503
 max-line-length=120

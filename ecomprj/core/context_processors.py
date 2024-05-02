@@ -9,7 +9,6 @@ def default(request):
     vendors = Vendor.objects.all()
     products = Product.objects.all()
 
-
     min_max_price = Product.objects.aggregate(Min('price'), Max('price'))
 
     try:
@@ -22,4 +21,5 @@ def default(request):
         address = Address.objects.get(user=request.user)
     except:
         address = None
-    return {'categories': categories, 'address': address, 'vendors': vendors, 'min_max_price': min_max_price, 'wishlist': wishlist, 'products': products}
+    return {'categories': categories, 'address': address, 'vendors': vendors, 'min_max_price': min_max_price,
+            'wishlist': wishlist, 'products': products}

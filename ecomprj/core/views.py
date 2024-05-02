@@ -172,7 +172,9 @@ def cart_view(request):
     if 'cart_data_obj' in request.session:
         for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount += int(item['qty']) * float(item['price'])
-        return render(request, "core/cart.html", {"cart_data": request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj']), 'cart_total_amount': cart_total_amount, 'title': 'Cart'})
+        return render(request, "core/cart.html", {"cart_data": request.session['cart_data_obj'],
+             'totalcartitems': len(request.session['cart_data_obj']), 'cart_total_amount':
+             cart_total_amount, 'title': 'Cart'})
     else:
         messages.warning(request, "Your cart is empty")
         return redirect("core:index")
@@ -191,9 +193,9 @@ def delete_item_from_cart(request):
         for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount += int(item['qty']) * float(item['price'])
 
-    context = render_to_string("core/async/cart-list.html", {"cart_data": request.session['cart_data_obj'],
-                                                             'totalcartitems': len(request.session['cart_data_obj']),
-                                                             'cart_total_amount': cart_total_amount, 'title': 'Cart'})
+    context = render_to_string("core/async/cart-list.html",
+                               {"cart_data": request.session['cart_data_obj'],
+    'totalcartitems': len(request.session['cart_data_obj']), 'cart_total_amount': cart_total_amount, 'title': 'Cart'})
     return JsonResponse({"data": context, 'totalcartitems': len(request.session['cart_data_obj'])})
 
 
@@ -393,7 +395,8 @@ def customer_dashboard(request):
 
     profile = Profile.objects.get(user=request.user)
 
-    orders = CartOrder.objects.annotate(month=ExtractMonth('order_date')).values('month').annotate(count=Count('id')).values('month', 'count')
+    orders = (CartOrder.objects.annotate(month=ExtractMonth('order_date')).values('month')
+              .annotate(count=Count('id')).values('month', 'count'))
     month = []
     total_orders = []
 
@@ -517,11 +520,3 @@ def ajax_contact_form(request):
     data = {'bool': True, 'message': 'Message sent successfully'}
 
     return JsonResponse({'data': data, 'title': 'Contact Us'})
-
-
-
-
-
-
-
-

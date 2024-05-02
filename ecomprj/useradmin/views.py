@@ -1,6 +1,8 @@
 import datetime
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 from django.db.models import Sum
 from django.shortcuts import redirect, render
 
@@ -184,5 +186,28 @@ def settings(request):
     return render(request, 'useradmin/settings.html', context)
 
 
+@login_required
+def change_password(request):
+    user = request.user
 
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_new_password = request.POST.get('confirm_new_password')
 
+        if confirm_new_password != new_password:
+            messages.error(request, 'Passwords do not match')
+            return redirect('useradmin:change_password')
+
+        if check_password(old_password, user.password):
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, 'Password changed successfully')
+            return redirect('useradmin:dashboard')
+        else:
+            messages.error(request, 'Old password is incorrect')
+            return redirect('useradmin:change_password')
+
+    context = {'title': 'Change Password'}
+
+    return render(request, 'useradmin/change_password.html', context)

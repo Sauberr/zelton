@@ -53,7 +53,8 @@ class Tags(models.Model):
 
 
 class Vendor(models.Model):
-    vid = ShortUUIDField(unique=True, length=10, max_length=30, prefix='ven', alphabet='abcdefghijklmnopqrstuvwxyz12345678090')
+    vid = ShortUUIDField(unique=True, length=10, max_length=30, prefix='ven',
+                         alphabet='abcdefghijklmnopqrstuvwxyz12345678090')
     title = models.CharField(max_length=100, default='Nestify')
     image = models.ImageField(upload_to=user_directory_path, default='vendor.jpg')
     cover_image = models.ImageField(upload_to=user_directory_path, default='vendor.jpg')
@@ -227,7 +228,3 @@ class Coupon(models.Model):
 
     class Meta:
         verbose_name_plural = 'Coupon'
-
-
-
-

@@ -2,7 +2,7 @@ from django.urls import path
 
 from useradmin.views import (add_product, change_order_status, dashboard,
                              delete_product, edit_product, order_detail,
-                             orders, products, reviews, settings, shop_page)
+                             orders, products, reviews, settings, shop_page, change_password)
 
 app_name = "useradmin"
 
@@ -18,4 +18,5 @@ urlpatterns = [
     path("shop_page/", shop_page, name="shop_page"),
     path("reviews/", reviews, name="reviews"),
     path("settings/", settings, name="settings"),
+    path("change_password/", change_password, name="change_password"),
 ]
