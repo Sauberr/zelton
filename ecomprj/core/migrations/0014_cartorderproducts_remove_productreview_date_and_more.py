@@ -7,47 +7,75 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0013_alter_product_description_and_more'),
+        ("core", "0013_alter_product_description_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CartOrderProducts',
+            name="CartOrderProducts",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('invoice_no', models.CharField(max_length=100)),
-                ('product_status', models.CharField(max_length=200)),
-                ('item', models.CharField(max_length=200)),
-                ('image', models.CharField(max_length=200)),
-                ('qty', models.IntegerField(default=0)),
-                ('price', models.DecimalField(decimal_places=2, default='1.99', max_digits=10)),
-                ('total', models.DecimalField(decimal_places=2, default='1.99', max_digits=10)),
-                ('date', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("invoice_no", models.CharField(max_length=100)),
+                ("product_status", models.CharField(max_length=200)),
+                ("item", models.CharField(max_length=200)),
+                ("image", models.CharField(max_length=200)),
+                ("qty", models.IntegerField(default=0)),
+                (
+                    "price",
+                    models.DecimalField(
+                        decimal_places=2, default="1.99", max_digits=10
+                    ),
+                ),
+                (
+                    "total",
+                    models.DecimalField(
+                        decimal_places=2, default="1.99", max_digits=10
+                    ),
+                ),
+                ("date", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'verbose_name_plural': 'Cart Order Items',
+                "verbose_name_plural": "Cart Order Items",
             },
         ),
         migrations.RemoveField(
-            model_name='productreview',
-            name='date',
+            model_name="productreview",
+            name="date",
         ),
         migrations.AddField(
-            model_name='address',
-            name='mobile',
+            model_name="address",
+            name="mobile",
             field=models.CharField(max_length=15, null=True),
         ),
         migrations.AlterField(
-            model_name='cartorder',
-            name='product_status',
-            field=models.CharField(choices=[('processing', 'Processing'), ('shipped', 'Shipped'), ('delivered', 'Delivered')], default='processing', max_length=30),
+            model_name="cartorder",
+            name="product_status",
+            field=models.CharField(
+                choices=[
+                    ("processing", "Processing"),
+                    ("shipped", "Shipped"),
+                    ("delivered", "Delivered"),
+                ],
+                default="processing",
+                max_length=30,
+            ),
         ),
         migrations.DeleteModel(
-            name='CartOrderItems',
+            name="CartOrderItems",
         ),
         migrations.AddField(
-            model_name='cartorderproducts',
-            name='order',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.cartorder'),
+            model_name="cartorderproducts",
+            name="order",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="core.cartorder"
+            ),
         ),
     ]

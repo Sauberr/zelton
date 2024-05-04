@@ -7,17 +7,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_remove_product_tags_product_vendor'),
+        ("core", "0002_remove_product_tags_product_vendor"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='vendor',
-            options={'verbose_name_plural': 'Vendor'},
+            name="vendor",
+            options={"verbose_name_plural": "Vendor"},
         ),
         migrations.AlterField(
-            model_name='product',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='category', to='core.category'),
+            model_name="product",
+            name="category",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="category",
+                to="core.category",
+            ),
         ),
     ]

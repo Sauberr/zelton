@@ -8,28 +8,37 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0012_product_tags'),
+        ("core", "0012_product_tags"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='description',
-            field=django_ckeditor_5.fields.CKEditor5Field(blank=True, default='This is the product', null=True),
+            model_name="product",
+            name="description",
+            field=django_ckeditor_5.fields.CKEditor5Field(
+                blank=True, default="This is the product", null=True
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='specifications',
+            model_name="product",
+            name="specifications",
             field=django_ckeditor_5.fields.CKEditor5Field(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='productreview',
-            name='product',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='reviews', to='core.product'),
+            model_name="productreview",
+            name="product",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="reviews",
+                to="core.product",
+            ),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='description',
-            field=django_ckeditor_5.fields.CKEditor5Field(blank=True, default='I am an Amazing vendor', null=True),
+            model_name="vendor",
+            name="description",
+            field=django_ckeditor_5.fields.CKEditor5Field(
+                blank=True, default="I am an Amazing vendor", null=True
+            ),
         ),
     ]

@@ -1,14 +1,13 @@
 from django.contrib import admin
-
 from userauths.models import ContactUs, Profile, User
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email', 'bio']
+    list_display = ["username", "email", "bio"]
 
 
 class ContactUsAdmin(admin.ModelAdmin):
-    list_display = ['full_name', 'email', 'subject']
+    list_display = ["full_name", "email", "subject"]
 
 
 # class ProfileAdmin(admin.ModelAdmin):

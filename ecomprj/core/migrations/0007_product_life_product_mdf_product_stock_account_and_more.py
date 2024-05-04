@@ -6,28 +6,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0006_alter_productimages_product'),
+        ("core", "0006_alter_productimages_product"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='life',
-            field=models.CharField(default='10 days', max_length=100),
+            model_name="product",
+            name="life",
+            field=models.CharField(default="10 days", max_length=100),
         ),
         migrations.AddField(
-            model_name='product',
-            name='mdf',
+            model_name="product",
+            name="mdf",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='stock_account',
-            field=models.CharField(default='10', max_length=100),
+            model_name="product",
+            name="stock_account",
+            field=models.CharField(default="10", max_length=100),
         ),
         migrations.AddField(
-            model_name='product',
-            name='type',
-            field=models.CharField(default='Organic', max_length=100),
+            model_name="product",
+            name="type",
+            field=models.CharField(default="Organic", max_length=100),
         ),
     ]

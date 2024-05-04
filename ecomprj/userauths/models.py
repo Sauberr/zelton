@@ -7,8 +7,8 @@ class User(AbstractUser):
     username = models.CharField(max_length=100)
     bio = models.CharField(max_length=255)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
         return self.username
@@ -22,7 +22,7 @@ class ContactUs(models.Model):
     message = models.TextField()
 
     class Meta:
-        verbose_name_plural = 'Contact Us'
+        verbose_name_plural = "Contact Us"
 
     def __str__(self):
         return self.full_name
@@ -32,14 +32,14 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=200)
     bio = models.CharField(max_length=200, null=True, blank=True)
-    image = models.ImageField(upload_to='image', null=True, blank=True)
+    image = models.ImageField(upload_to="image", null=True, blank=True)
     phone = models.CharField(max_length=20)
     address = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     verified = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name_plural = 'Profile'
+        verbose_name_plural = "Profile"
 
     def __str__(self):
         return f"{self.user.username} - {self.full_name} = {self.bio}"
