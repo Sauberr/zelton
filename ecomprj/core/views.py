@@ -1,4 +1,8 @@
 import calendar
+from decimal import Decimal
+import requests
+from bs4 import BeautifulSoup
+from http import HTTPStatus
 
 import stripe
 from core.forms import ProductReviewForm
@@ -303,6 +307,11 @@ def save_checkout_info(request):
             for p_id, item in request.session["cart_data_obj"].items():
                 total_amount += int(item["qty"]) * float(item["price"])
 
+            if request.user.is_authenticated:
+                user = request.user
+            else:
+                user = None
+
             full_name = request.session["full_name"]
             email = request.session["email"]
             phone = request.session["mobile"]
@@ -313,7 +322,7 @@ def save_checkout_info(request):
 
             # Create order object
             order = CartOrder.objects.create(
-                user=request.user,
+                user=user,
                 price=total_amount,
                 full_name=full_name,
                 email=email,
@@ -353,6 +362,10 @@ def checkout(request, oid):
     order = CartOrder.objects.get(oid=oid)
     order_items = CartOrderProducts.objects.filter(order=order)
 
+    current_naira_rate = Decimal(18.42)
+    total = order.price * current_naira_rate
+    order_total = total * 100
+
     if request.method == "POST":
         code = request.POST.get("code")
         coupon = Coupon.objects.filter(code=code, active=True).first()
@@ -377,6 +390,7 @@ def checkout(request, oid):
         "order_items": order_items,
         "stripe_publishable_key": settings.STRIPE_PUBLISHABLE_KEY,
         "title": "Checkout",
+        "order_total": order_total,
     }
     return render(request, "core/checkout.html", context)
 
