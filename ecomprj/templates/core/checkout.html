@@ -78,7 +78,20 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn w-100" id="checkout-button" style="background-color: blueviolet;">Pay With Stripe (Credit or Debit Card)</button>
+                    <form method="POST" action="https://checkout.flutterwave.com/v3/hosted/pay">
+                        {% csrf_token %}
+                        <input type="hidden" name="public_key" value="FLWPUBK_TEST-957a251efeb4bc64a31f033f61b7bb8e-X">
+                        <input type="hidden" name="customer[email]" value="{{ order.email }}">
+                        <input type="hidden" name="customer[name]" value="{{ order.full_name }}">
+                        <input type="hidden" name="tx_ref" value="{{ order.oid }}">
+                        <input type="hidden" name="amount" value="{{ order.price }}">
+                         <input type="hidden" name="redirect_url" value="https://2467-188-130-177-35.ngrok-free.app/payment-completed/{{ order.id }}/">
+                        <input type="hidden" name="currency" value="USD">
+                        <input type="hidden" name="meta[source]" value="docs-html-test">
+                        <button id="start-payment-button" type="submit" class="btn w-100 mt-4" style="background-color: lightgreen;">Pay With Flutterwave (Credit or Debit Card)</button>
+                    </form>
+
+                    <button type="button" class="btn w-100 mt-4" id="checkout-button" style="background-color: blueviolet;">Pay With Stripe (Credit or Debit Card)</button>
                     <div id="paypal-button-container" class="mt-3"></div>
                     <button type="button" class="btn w-100 mt-4" onclick="makePaystackPayment()" style="background-color: #09a5db;">Pay With Paystack (Credit or Debit Card) </button>
                 </div>
