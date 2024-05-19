@@ -1,5 +1,7 @@
 import calendar
 from decimal import Decimal
+import re
+
 import requests
 from bs4 import BeautifulSoup
 from http import HTTPStatus
@@ -362,7 +364,19 @@ def checkout(request, oid):
     order = CartOrder.objects.get(oid=oid)
     order_items = CartOrderProducts.objects.filter(order=order)
 
-    current_naira_rate = Decimal(18.42)
+    url = 'https://www.bloomberg.com/quote/USDZAR:CUR'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+
+    response = requests.get(url, headers=headers)
+    response.encoding = 'utf-8'
+    soup = BeautifulSoup(response.text, 'html.parser')
+    div = soup.find('div', {'class': 'sized-price media-ui-SizedPrice_extraLarge-05pKbJRbUH8-',
+                            'data-component': 'sized-price'}).text.strip()
+
+    div = re.sub(r'[^\d.]', '', div)
+
+    current_naira_rate = Decimal(div)
     total = order.price * current_naira_rate
     order_total = total * 100
 
