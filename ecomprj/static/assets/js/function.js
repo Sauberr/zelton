@@ -79,9 +79,6 @@ $(document).ready(function () {
             let filter_value = $(this).val()
             let filter_key = $(this).data("filter") // vendor, category
 
-            // console.log("Filter value is:", filter_value);
-            // console.log("Filter key is:", filter_key);
-
             filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function (element) {
                 return element.value
             })
@@ -108,19 +105,10 @@ $(document).ready(function () {
         let max_price = $(this).attr("max")
         let current_price = $(this).val()
 
-        // console.log("Current Price is:", current_price);
-        // console.log("Max Price is:", max_price);
-        // console.log("Min Price is:", min_price);
-
         if (current_price < parseInt(min_price) || current_price > parseInt(max_price)) {
-            // console.log("Price Error Occured");
 
             min_price = Math.round(min_price * 100) / 100
             max_price = Math.round(max_price * 100) / 100
-
-
-            // console.log("Max Price is:", min_Price);
-            // console.log("Min Price is:", max_Price);
 
             alert("Price must between $" + min_price + ' and $' + max_price)
             $(this).val(min_price)
@@ -174,7 +162,6 @@ $(document).ready(function () {
                 console.log("Adding Product to Cart...");
             },
             success: function (response) {
-                // this_val.html("✓")
                 this_val.html("<i class='fas fa-check-circle'></i>")
 
                 console.log("Added Product to Cart!");
@@ -352,14 +339,18 @@ $(document).ready(function () {
             },
             success: function(response) {
                 console.log("Data sent successfully");
-                $(".contact_us_p").hide()
-                $("#contact-form-ajax").hide()
-                $("#message-response").html("Message sent successfully. We will contact you soon.")
+                if(response.data.bool) {
+                    $(".contact_us_p").hide()
+                    $("#contact-form-ajax").hide()
+                    $("#message-response").html("Message sent successfully. We will contact you soon.")
+                } else {
+                    $('#message-response').hide()
+                }
             }
         })
     })
 
-})
+});
 
 
 

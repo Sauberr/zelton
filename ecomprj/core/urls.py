@@ -4,8 +4,8 @@ from core.views import (
     ajax_add_review,
     ajax_contact_form,
     cart_view,
-    category_list_view,
-    category_product_list_view,
+    category_list,
+    category_product_list,
     checkout,
     contact,
     create_checkout_session,
@@ -18,15 +18,15 @@ from core.views import (
     payment_completed_view,
     payment_details,
     payment_failed_view,
-    product_detail_view,
-    product_list_view,
+    product_detail,
+    product_list,
     remove_wishlist,
     save_checkout_info,
-    search_view,
+    search,
     tag_list,
     update_cart,
-    vendor_detail_view,
-    vendor_list_view,
+    vendor_detail,
+    vendor_list,
     wishlist_view,
 )
 from django.urls import include, path
@@ -36,22 +36,22 @@ app_name = "core"
 urlpatterns = [
     # Homepage
     path("", index, name="index"),
-    path("products/", product_list_view, name="product-list"),
-    path("product/<str:pid>/", product_detail_view, name="product-detail"),
+    path("products/", product_list, name="product-list"),
+    path("product/<str:pid>/", product_detail, name="product-detail"),
     # Category
-    path("category/", category_list_view, name="category-list"),
+    path("category/", category_list, name="category-list"),
     path(
-        "category/<str:cid>/", category_product_list_view, name="category-product-list"
+        "category/<str:cid>/", category_product_list, name="category-product-list"
     ),
     # Vendor
-    path("vendors/", vendor_list_view, name="vendor-list"),
-    path("vendor/<str:vid>/", vendor_detail_view, name="vendor-detail"),
+    path("vendors/", vendor_list, name="vendor-list"),
+    path("vendor/<str:vid>/", vendor_detail, name="vendor-detail"),
     # Tags
     path("products/tag/<slug:tag_slug>/", tag_list, name="tags"),
     # Reviews
     path("ajax-add-review/<str:pid>/", ajax_add_review, name="ajax-add-review"),
     # Search
-    path("search/", search_view, name="search"),
+    path("search/", search, name="search"),
     # Filter product
     path("filter-products/", filter_product, name="filter-products"),
     # Cart

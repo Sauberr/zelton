@@ -4,7 +4,6 @@ import re
 
 import requests
 from bs4 import BeautifulSoup
-from http import HTTPStatus
 
 import stripe
 from core.forms import ProductReviewForm
@@ -43,14 +42,14 @@ def index(request):
     return render(request, "core/index.html", context)
 
 
-def product_list_view(request):
+def product_list(request):
     products = Product.objects.filter(product_status="published")
     tags = Tag.objects.all()
     context = {"products": products, "title": "Products", "tags": tags}
     return render(request, "core/product-list.html", context)
 
 
-def product_detail_view(request, pid):
+def product_detail(request, pid):
     product = Product.objects.get(pid=pid)
     p_image = product.p_images.all()
     products = Product.objects.filter(category=product.category).exclude(pid=pid)
@@ -79,27 +78,27 @@ def product_detail_view(request, pid):
     return render(request, "core/product-detail.html", context)
 
 
-def category_list_view(request):
+def category_list(request):
     # categories = Category.objects.all().annotate(product_count=Count('category'))
     categories = Category.objects.all()
     context = {"categories": categories, "title": "Categories"}
     return render(request, "core/category-list.html", context)
 
 
-def category_product_list_view(request, cid):
+def category_product_list(request, cid):
     category = Category.objects.get(cid=cid)
     products = Product.objects.filter(product_status="published", category=category)
     context = {"category": category, "products": products, "title": category.title}
     return render(request, "core/category-product-list.html", context)
 
 
-def vendor_list_view(request):
+def vendor_list(request):
     vendors = Vendor.objects.all()
     context = {"vendors": vendors, "title": "Vendors"}
     return render(request, "core/vendor-list.html", context)
 
 
-def vendor_detail_view(request, vid):
+def vendor_detail(request, vid):
     vendor = Vendor.objects.get(vid=vid)
     products = Product.objects.filter(vendor=vendor, product_status="published")
     context = {"vendor": vendor, "products": products, "title": vendor.title}
@@ -139,7 +138,7 @@ def ajax_add_review(request, pid):
     )
 
 
-def search_view(request):
+def search(request):
     query = request.GET.get("q")
     products = Product.objects.filter(title__icontains=query).order_by("-date")
     context = {"products": products, "query": query, "title": "Search"}
@@ -602,6 +601,12 @@ def ajax_contact_form(request):
     phone = request.GET["phone"]
     subject = request.GET["subject"]
     message = request.GET["message"]
+
+    if not all([full_name, email, phone, subject, message]):
+        data = {
+            'bool': False,
+        }
+        return JsonResponse({'data': data})
 
     contact = ContactUs.objects.create(
         full_name=full_name,
