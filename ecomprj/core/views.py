@@ -1,23 +1,10 @@
 import calendar
-from decimal import Decimal
 import re
+from decimal import Decimal
 
 import requests
-from bs4 import BeautifulSoup
-
 import stripe
-from core.forms import ProductReviewForm
-from core.models import (
-    Address,
-    CartOrder,
-    CartOrderProducts,
-    Category,
-    Coupon,
-    Product,
-    ProductReview,
-    Vendor,
-    Wishlist,
-)
+from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -30,6 +17,10 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
+
+from core.forms import ProductReviewForm
+from core.models import (Address, CartOrder, CartOrderProducts, Category,
+                         Coupon, Product, ProductReview, Vendor, Wishlist)
 from userauths.models import ContactUs, Profile
 
 
@@ -118,7 +109,7 @@ def tag_list(request, tag_slug=None):
 def ajax_add_review(request, pid):
     product = Product.objects.get(pid=pid)
     user = request.user
-    review = ProductReview.objects.create(
+    review = ProductReview.objects.create(  # noqa: F841
         user=user,
         product=product,
         review=request.POST["review"],
@@ -173,15 +164,14 @@ def filter_product(request):
 
 
 def add_to_cart(request):
-    cart_product = {}
 
-    cart_product[str(request.GET["id"])] = {
+    cart_product = {str(request.GET["id"]): {
         "title": request.GET["title"],
         "qty": request.GET["qty"],
         "price": request.GET["price"],
         "image": request.GET["image"],
         "pid": request.GET["pid"],
-    }
+    }}
 
     if "cart_data_obj" in request.session:
         if str(request.GET["id"]) in request.session["cart_data_obj"]:
@@ -205,7 +195,7 @@ def add_to_cart(request):
     )
 
 
-def cart_view(request):
+def cart(request):
     cart_total_amount = 0
     if "cart_data_obj" in request.session:
         for p_id, item in request.session["cart_data_obj"].items():
@@ -281,7 +271,7 @@ def update_cart(request):
     )
 
 
-def save_checkout_info(request):
+def save_checkout_info(request, order=None):
     cart_total_amount = 0
     total_amount = 0
 
@@ -346,7 +336,7 @@ def save_checkout_info(request):
             for p_id, item in request.session["cart_data_obj"].items():
                 cart_total_amount += int(item["qty"]) * float(item["price"])
 
-                cart_order_products = CartOrderProducts.objects.create(
+                cart_order_products = CartOrderProducts.objects.create(  # noqa: F841
                     order=order,
                     invoice_no="INVOICE_NO-" + str(order.id),
                     item=item["title"],
@@ -463,9 +453,9 @@ def payment_details(request, oid):
 
 
 @login_required
-def payment_completed_view(request, oid):
+def payment_completed(request, oid):
     order = CartOrder.objects.get(oid=oid)
-    if order.paid_status == False:
+    if not order.paid_status:
         order.paid_status = True
         order.save()
 
@@ -474,7 +464,7 @@ def payment_completed_view(request, oid):
 
 
 @login_required
-def payment_failed_view(request):
+def payment_failed(request):
     context = {"title": "Payment Failed"}
     return render(request, "core/payment-failed.html", context)
 
@@ -503,7 +493,7 @@ def customer_dashboard(request):
         address = request.POST.get("address")
         mobile = request.POST.get("mobile")
 
-        new_address = Address.objects.create(
+        new_address = Address.objects.create(  # noqa: F841
             user=request.user,
             address=address,
             mobile=mobile,
@@ -542,7 +532,7 @@ def make_address_default(request):
 
 
 @login_required
-def wishlist_view(request):
+def wishlist(request):
     try:
         wishlist = Wishlist.objects.all()
     except:
@@ -561,7 +551,7 @@ def add_to_wishlist(request):
     if wishlist_count > 0:
         context = {"bool": True}
     else:
-        new_wishlist = Wishlist.objects.create(
+        new_wishlist = Wishlist.objects.create(  # noqa: F841
             user=request.user,
             product=product,
         )
@@ -578,7 +568,7 @@ def remove_wishlist(request):
     wishlist = Wishlist.objects.filter(user=request.user)
 
     wishlist_id = Wishlist.objects.get(id=pid)
-    delete_product = wishlist_id.delete()
+    delete_product = wishlist_id.delete()  # noqa: F841
 
     context = {
         "bool": True,
@@ -608,7 +598,7 @@ def ajax_contact_form(request):
         }
         return JsonResponse({'data': data})
 
-    contact = ContactUs.objects.create(
+    contact = ContactUs.objects.create(  # noqa: F841
         full_name=full_name,
         email=email,
         phone=phone,

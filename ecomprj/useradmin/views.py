@@ -1,11 +1,13 @@
 import datetime
 
-from core.models import CartOrder, CartOrderProducts, Category, Product, ProductReview
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.db.models import Sum
 from django.shortcuts import redirect, render
+
+from core.models import (CartOrder, CartOrderProducts, Category, Product,
+                         ProductReview)
 from useradmin.decorators import admin_required
 from useradmin.forms import AddProductForm
 from userauths.models import Profile, User
@@ -179,7 +181,7 @@ def settings(request):
         address = request.POST.get("address")
         country = request.POST.get("country")
 
-        if image != None:
+        if image is not None:
             profile.image = image
 
         profile.full_name = full_name

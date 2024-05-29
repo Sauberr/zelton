@@ -1,35 +1,15 @@
-from core.views import (
-    add_to_cart,
-    add_to_wishlist,
-    ajax_add_review,
-    ajax_contact_form,
-    cart_view,
-    category_list,
-    category_product_list,
-    checkout,
-    contact,
-    create_checkout_session,
-    customer_dashboard,
-    delete_item_from_cart,
-    filter_product,
-    index,
-    make_address_default,
-    order_detail,
-    payment_completed_view,
-    payment_details,
-    payment_failed_view,
-    product_detail,
-    product_list,
-    remove_wishlist,
-    save_checkout_info,
-    search,
-    tag_list,
-    update_cart,
-    vendor_detail,
-    vendor_list,
-    wishlist_view,
-)
 from django.urls import include, path
+
+from core.views import (add_to_cart, add_to_wishlist, ajax_add_review,
+                        ajax_contact_form, cart, category_list,
+                        category_product_list, checkout, contact,
+                        create_checkout_session, customer_dashboard,
+                        delete_item_from_cart, filter_product, index,
+                        make_address_default, order_detail, payment_completed,
+                        payment_details, payment_failed, product_detail,
+                        product_list, remove_wishlist, save_checkout_info,
+                        search, tag_list, update_cart, vendor_detail,
+                        vendor_list, wishlist)
 
 app_name = "core"
 
@@ -56,7 +36,7 @@ urlpatterns = [
     path("filter-products/", filter_product, name="filter-products"),
     # Cart
     path("add-to-cart/", add_to_cart, name="add-to-cart"),
-    path("cart/", cart_view, name="cart"),
+    path("cart/", cart, name="cart"),
     path("delete-from-cart/", delete_item_from_cart, name="delete-from-cart"),
     path("update-cart/", update_cart, name="update-cart"),
     # Checkout
@@ -65,10 +45,10 @@ urlpatterns = [
     # Paypal
     path("paypal/", include("paypal.standard.ipn.urls")),
     # Payment Successful
-    path("payment-completed/<oid>/", payment_completed_view, name="payment-completed"),
+    path("payment-completed/<oid>/", payment_completed, name="payment-completed"),
     path("payment-details/<oid>/", payment_details, name="payment-details"),
     # Payment Failed
-    path("payment-failed/", payment_failed_view, name="payment-failed"),
+    path("payment-failed/", payment_failed, name="payment-failed"),
     # Dashboard
     path("dashboard/", customer_dashboard, name="dashboard"),
     # Order detail
@@ -76,7 +56,7 @@ urlpatterns = [
     # Making address default
     path("make-default-address/", make_address_default, name="make-default-address"),
     # Wishlist
-    path("wishlist/", wishlist_view, name="wishlist"),
+    path("wishlist/", wishlist, name="wishlist"),
     # Add to wishlist
     path("add-to-wishlist/", add_to_wishlist, name="add-to-wishlist"),
     # Remove from wishlist

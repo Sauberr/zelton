@@ -145,7 +145,7 @@ $(document).ready(function () {
         console.log("PID:", product_pid);
         console.log("Image:", product_image);
         console.log("Index:", index);
-        console.log("Currrent Element:", this_val);
+        console.log("Current Element:", this_val);
 
         $.ajax({
             url: '/add-to-cart',

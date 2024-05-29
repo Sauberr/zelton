@@ -1,18 +1,9 @@
 from django.urls import path
-from useradmin.views import (
-    add_product,
-    change_order_status,
-    change_password,
-    dashboard,
-    delete_product,
-    edit_product,
-    order_detail,
-    orders,
-    products,
-    reviews,
-    settings,
-    shop_page,
-)
+
+from useradmin.views import (add_product, change_order_status, change_password,
+                             dashboard, delete_product, edit_product,
+                             order_detail, orders, products, reviews, settings,
+                             shop_page)
 
 app_name = "useradmin"
 

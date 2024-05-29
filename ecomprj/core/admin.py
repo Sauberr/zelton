@@ -1,16 +1,8 @@
-from core.models import (
-    Address,
-    CartOrder,
-    CartOrderProducts,
-    Category,
-    Coupon,
-    Product,
-    ProductImages,
-    ProductReview,
-    Vendor,
-    Wishlist,
-)
 from django.contrib import admin
+
+from core.models import (Address, CartOrder, CartOrderProducts, Category,
+                         Coupon, Product, ProductImages, ProductReview, Vendor,
+                         Wishlist)
 
 
 class ProductImagesAdmin(admin.TabularInline):

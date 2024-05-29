@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
+
 from userauths.forms import ProfileForm, UserRegisterForm
 from userauths.models import Profile, User
 
 
-def register_view(request):
+def register(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -24,7 +25,7 @@ def register_view(request):
     return render(request, "userauths/sign-up.html", context)
 
 
-def login_view(request):
+def login(request):
     if request.user.is_authenticated:
         messages.error(request, "You are already logged in!")
         return redirect("core:index")
@@ -52,7 +53,7 @@ def login_view(request):
     return render(request, "userauths/sign-in.html")
 
 
-def logout_view(request):
+def logout(request):
     logout(request)
     messages.success(request, "You are now logged out")
     return redirect("userauths:sign-in")
