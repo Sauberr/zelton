@@ -1,5 +1,7 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import login as auth_login
 from django.shortcuts import redirect, render
 
 from userauths.forms import ProfileForm, UserRegisterForm
@@ -17,7 +19,7 @@ def register(request):
                 username=form.cleaned_data["email"],
                 password=form.cleaned_data["password1"],
             )
-            login(request, new_user)
+            auth_login(request, new_user)
             return redirect("core:index")
     else:
         form = UserRegisterForm()
@@ -54,7 +56,7 @@ def login(request):
 
 
 def logout(request):
-    logout(request)
+    auth_logout(request)
     messages.success(request, "You are now logged out")
     return redirect("userauths:sign-in")
 
