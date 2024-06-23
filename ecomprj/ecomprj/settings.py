@@ -164,7 +164,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Jazzmin Settings
 
 JAZZMIN_SETTINGS: Dict[str, ...] = {
-    "site_header": "Cheburashka",
+    "site_header": "Zelton",
     "site_brand": "You order, we deliver",
     "site_logo": "assets/imgs/theme/logo.svg",
     "site_copyright": "Cheburashka 2024",
